@@ -1,25 +1,10 @@
 package dev.praneeth.backend.Medicine;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "medicine")
 public class Medicine {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer medicineID;
-
-    @Column(name = "name", nullable = false, length = 100)
     private String name;
-
-    @Column(name = "description", nullable = true, length = 255)
     private String description;
-
-    @Column(name = "dosage_form", nullable = false, length = 50)
     private String dosageForm;
-
-    @Column(name = "strength", nullable = false, length = 50)
     private String strength;
 
     // Constructors

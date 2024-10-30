@@ -1,35 +1,36 @@
-package dev.praneeth.backend.nurse;
+package dev.praneeth.backend.Nurse;
 
-import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping(path = "/api/v1/nurses")
+@RequestMapping(path = "/api/v1/nurse")
 public class NurseController {
 
-    private final NurseService NurseService;
+    private final NurseService nurseService;
 
     public NurseController(NurseService nurseService) {
-        this.NurseService = nurseService;
+        this.nurseService = nurseService;
     }
 
     @GetMapping
-    public List<Nurse> GetNurses() {
-        return NurseService.GetNurses();
+    public List<Nurse> getNurses() {
+        return nurseService.getNurses();
     }
 
     @PostMapping
-    public void AddNurse(@RequestBody Nurse nurse) {
-        NurseService.AddNurse(nurse);
+    public void addNurse(@RequestBody Nurse nurse) {
+        nurseService.addNurse(nurse);
     }
 
     @DeleteMapping(path = "/{nurseId}")
-    public void DeleteNurse(@PathVariable("nurseId") Integer nurseId) {
-        NurseService.DeleteNurse(nurseId);
+    public void deleteNurse(@PathVariable("nurseId") Integer nurseId) {
+        nurseService.deleteNurse(nurseId);
     }
 
     @PutMapping(path = "/{nurseId}")
-    public void UpdateNurse(@PathVariable("nurseId") Integer nurseId, @RequestBody NurseUpdateRequest updateRequest) {
-        NurseService.UpdateNurse(nurseId, updateRequest);
+    public void updateNurse(@PathVariable("nurseId") Integer nurseId, @RequestBody NurseUpdateRequest updateRequest) {
+        nurseService.updateNurse(nurseId, updateRequest);
     }
 }

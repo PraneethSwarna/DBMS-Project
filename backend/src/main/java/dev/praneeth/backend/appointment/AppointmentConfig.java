@@ -1,8 +1,7 @@
-package dev.praneeth.backend.appointment;
+package dev.praneeth.backend.Appointment;
 
 // import java.time.LocalDate;
 // import java.time.LocalTime;
-// import java.util.List;
 // import org.springframework.boot.CommandLineRunner;
 // import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,11 +10,17 @@ import org.springframework.context.annotation.Configuration;
 public class AppointmentConfig {
 
     // @Bean
-    // CommandLineRunner commandLineRunner(AppointmentRepository appointmentRepository) {
+    // CommandLineRunner commandLineRunner1(AppointmentDao appointmentDao) {
     //     return args -> {
-    //         Appointment appointment1 = new Appointment(LocalDate.of(2023, 9, 23), LocalTime.of(10, 0), Appointment.Status.Scheduled, 1, 1, 1);
+    //         Appointment appointment1 = new Appointment();
+    //         appointment1.setAppointmentDate(LocalDate.of(2023, 9, 23));
+    //         appointment1.setAppointmentTime(LocalTime.of(10, 0));
+    //         appointment1.setStatus(Appointment.Status.Scheduled);
+    //         appointment1.setDiagnosisID(1); // diagnosisID
+    //         appointment1.setDoctorID(1); // doctorID
+    //         appointment1.setPatientID(1); // patientID
 
-    //         appointmentRepository.saveAll(List.of(appointment1));
+    //         appointmentDao.addAppointment(appointment1);
     //     };
     // }
 }

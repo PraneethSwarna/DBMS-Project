@@ -1,16 +1,13 @@
 package dev.praneeth.backend.Prescription;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class PrescriptionUpdateRequest {
-
     private LocalDate prescriptionDate;
-    private String dosage;
-    private String frequency;
-    private Integer duration;
-    private String instructions;
+    private List<MedicineUpdateRequest> medicines; // Existing medicines (update or delete)
+    private List<MedicineUpdateRequest> newMedicines; // New medicines to be added
 
-    // Getters and Setters
     public LocalDate getPrescriptionDate() {
         return prescriptionDate;
     }
@@ -19,35 +16,19 @@ public class PrescriptionUpdateRequest {
         this.prescriptionDate = prescriptionDate;
     }
 
-    public String getDosage() {
-        return dosage;
+    public List<MedicineUpdateRequest> getMedicines() {
+        return medicines;
     }
 
-    public void setDosage(String dosage) {
-        this.dosage = dosage;
+    public void setMedicines(List<MedicineUpdateRequest> medicines) {
+        this.medicines = medicines;
     }
 
-    public String getFrequency() {
-        return frequency;
+    public List<MedicineUpdateRequest> getNewMedicines() {
+        return newMedicines;
     }
 
-    public void setFrequency(String frequency) {
-        this.frequency = frequency;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
-
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
+    public void setNewMedicines(List<MedicineUpdateRequest> newMedicines) {
+        this.newMedicines = newMedicines;
     }
 }

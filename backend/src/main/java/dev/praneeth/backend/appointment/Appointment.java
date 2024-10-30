@@ -1,33 +1,15 @@
-package dev.praneeth.backend.appointment;
+package dev.praneeth.backend.Appointment;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Entity
-@Table(name = "appointments")
 public class Appointment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer appointmentID;
-
-    @Column(name = "appointment_date", nullable = false)
     private LocalDate appointmentDate;
-
-    @Column(name = "appointment_time", nullable = false)
     private LocalTime appointmentTime;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
     private Status status;
-
-    @Column(name = "diagnosis_id")
     private Integer diagnosisID;
-
-    @Column(name = "doctor_id", nullable = false)
     private Integer doctorID;
-
-    @Column(name = "patient_id", nullable = false)
     private Integer patientID;
 
     public enum Status {

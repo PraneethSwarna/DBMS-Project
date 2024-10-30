@@ -1,61 +1,67 @@
-package dev.praneeth.backend.appointment;
+package dev.praneeth.backend.Appointment;
 
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AppointmentService {
-    private final AppointmentRepository AppointmentRepository;
 
-    public AppointmentService(AppointmentRepository AppointmentRepository) {
-        this.AppointmentRepository = AppointmentRepository;
+    private final AppointmentDao appointmentDao;
+
+    public AppointmentService(AppointmentDao appointmentDao) {
+        this.appointmentDao = appointmentDao;
     }
 
     public List<Appointment> getAppointments() {
-        return AppointmentRepository.findAll();
+        return appointmentDao.getAllAppointments();
     }
 
     public void addAppointment(Appointment appointment) {
-        AppointmentRepository.save(appointment);
+        appointmentDao.addAppointment(appointment);
     }
 
     public void deleteAppointment(Integer appointmentId) {
-        boolean exists = AppointmentRepository.existsById(appointmentId);
-        if (!exists) {
+        Optional<Appointment> appointmentOptional = appointmentDao.findById(appointmentId);
+        if (!appointmentOptional.isPresent()) {
             throw new IllegalStateException("Appointment with id " + appointmentId + " does not exist");
         }
-        AppointmentRepository.deleteById(appointmentId);
+        appointmentDao.deleteAppointment(appointmentId);
+    }
+
+    @Transactional
+    public void updateAppointment(Integer appointmentId, AppointmentUpdateRequest updateRequest) {
+        Optional<Appointment> appointmentOptional = appointmentDao.findById(appointmentId);
+
+        if (!appointmentOptional.isPresent()) {
+            throw new IllegalStateException("Appointment with id " + appointmentId + " does not exist");
+        }
+
+        Appointment appointment = appointmentOptional.get();
+
+        // Update fields only if they are present in the request
+        if (updateRequest.getAppointmentDate() != null) {
+            appointment.setAppointmentDate(updateRequest.getAppointmentDate());
+        }
+        if (updateRequest.getAppointmentTime() != null) {
+            appointment.setAppointmentTime(updateRequest.getAppointmentTime());
+        }
+        if (updateRequest.getStatus() != null) {
+            // Convert String to Appointment.Status enum
+            Appointment.Status status = Appointment.Status.valueOf(updateRequest.getStatus());
+            appointment.setStatus(status);
+        }
+
+        // Update in the DAO
+        appointmentDao.updateAppointment(appointment); // Assuming this method takes an Appointment object.
     }
 
     public List<Appointment> getAppointmentsByDoctor(Integer doctorId) {
-        return AppointmentRepository.findByDoctorId(doctorId);
+        return appointmentDao.getAppointmentsByDoctor(doctorId);
     }
 
     public List<Appointment> getAppointmentsByPatient(Integer patientId) {
-        return AppointmentRepository.findByPatientId(patientId);
-    }
-
-    public void updateAppointment(Integer appointmentId, AppointmentUpdateRequest updateRequest) {
-        Optional<Appointment> appointmentOptional = AppointmentRepository.findById(appointmentId);
-        
-        if (appointmentOptional.isPresent()) {
-            Appointment appointment = appointmentOptional.get();
-
-            // Update date and time if provided
-            if (updateRequest.getDateTime() != null) {
-                appointment.setAppointmentDate(updateRequest.getDateTime().toLocalDate());
-                appointment.setAppointmentTime(updateRequest.getDateTime().toLocalTime());
-            }
-
-            // Update status if provided
-            if (updateRequest.getStatus() != null) {
-                appointment.setStatus(Appointment.Status.valueOf(updateRequest.getStatus()));
-            }
-
-            AppointmentRepository.save(appointment);
-        } else {
-            throw new IllegalStateException("Appointment with id " + appointmentId + " does not exist");
-        }
+        return appointmentDao.getAppointmentsByPatient(patientId);
     }
 }

@@ -1,12 +1,12 @@
-package dev.praneeth.backend.nurse;
+package dev.praneeth.backend.Nurse;
 
 public class NurseUpdateRequest {
 
     private String firstName;
     private String lastName;
-    private String email;
     private String phoneNumber;
-    private String department;
+    private String email;
+    private Nurse.Shift shift;
 
     // Getters and Setters
     public String getFirstName() {
@@ -25,14 +25,6 @@ public class NurseUpdateRequest {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -41,11 +33,19 @@ public class NurseUpdateRequest {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Nurse.Shift getShift() {
+        return shift;
+    }
+
+    public void setShift(Nurse.Shift shift) {
+        this.shift = shift;
     }
 }

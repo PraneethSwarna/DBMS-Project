@@ -1,25 +1,10 @@
 package dev.praneeth.backend.Diagnosis;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "diagnosis")
 public class Diagnosis {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer diagnosisID;
-
-    @Column(name = "prescription_ID", nullable = false)
     private Integer prescriptionID;
-
-    @Column(name = "lab_test_ID", nullable = false)
     private Integer labTestID;
-
-    @Column(name = "lab_result_ID", nullable = false)
     private Integer labResultID;
-
-    @Column(name = "notes", nullable = true, length = 255)
     private String notes;
 
     // Constructors

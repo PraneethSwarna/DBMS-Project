@@ -1,45 +1,28 @@
-package dev.praneeth.backend.appointment;
+package dev.praneeth.backend.Appointment;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class AppointmentUpdateRequest {
-    private Integer appointmentId;
-    private Integer doctorId;
-    private Integer patientId;
-    private LocalDateTime dateTime;
-    private String status;
+    private LocalDate appointmentDate;
+    private LocalTime appointmentTime;
+    private String status; // Assuming status is a String for simplicity.
 
     // Getters and Setters
-    public Integer getAppointmentId() {
-        return appointmentId;
+    public LocalDate getAppointmentDate() {
+        return appointmentDate;
     }
 
-    public void setAppointmentId(Integer appointmentId) {
-        this.appointmentId = appointmentId;
+    public void setAppointmentDate(LocalDate appointmentDate) {
+        this.appointmentDate = appointmentDate;
     }
 
-    public Integer getDoctorId() {
-        return doctorId;
+    public LocalTime getAppointmentTime() {
+        return appointmentTime;
     }
 
-    public void setDoctorId(Integer doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public Integer getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Integer patientId) {
-        this.patientId = patientId;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setAppointmentTime(LocalTime appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 
     public String getStatus() {

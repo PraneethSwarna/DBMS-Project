@@ -1,6 +1,7 @@
 package dev.praneeth.backend.Diagnosis;
 
 public class DiagnosisUpdateRequest {
+
     private Integer prescriptionID;
     private Integer labTestID;
     private Integer labResultID;

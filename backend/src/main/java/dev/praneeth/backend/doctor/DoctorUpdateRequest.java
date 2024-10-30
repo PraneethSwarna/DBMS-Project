@@ -1,12 +1,13 @@
-package dev.praneeth.backend.doctor;
+package dev.praneeth.backend.Doctor;
 
 public class DoctorUpdateRequest {
 
     private String firstName;
     private String lastName;
-    private String specialization;
-    private String email;
+    private String specialty;
     private String phoneNumber;
+    private String email;
+    private String officeNumber;
 
     // Getters and Setters
     public String getFirstName() {
@@ -26,11 +27,19 @@ public class DoctorUpdateRequest {
     }
 
     public String getSpecialty() {
-        return specialization;
+        return specialty;
     }
 
-    public void setSpecialty(String specialization) {
-        this.specialization = specialization;
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
@@ -41,11 +50,11 @@ public class DoctorUpdateRequest {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getOfficeNumber() {
+        return officeNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setOfficeNumber(String officeNumber) {
+        this.officeNumber = officeNumber;
     }
 }

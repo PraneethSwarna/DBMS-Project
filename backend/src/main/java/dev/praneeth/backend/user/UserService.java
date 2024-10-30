@@ -4,17 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
 
     private final UserDao userDao;
     private final BCryptPasswordEncoder passwordEncoder;
-
 
     public UserService(UserDao userDao, BCryptPasswordEncoder passwordEncoder) {
         this.userDao = userDao;
@@ -45,7 +42,6 @@ public class UserService {
         userDao.deleteUser(userId);
     }
 
-    @Transactional
     public void updateUser(Integer userId, UserUpdateRequest updateRequest) {
         // Retrieve the user or throw an exception if not found
         User user = userDao.getUserById(userId)
@@ -101,6 +97,6 @@ public class UserService {
         }
 
         // Save the updated user entity
-        userDao.addUser(user);
+        userDao.updateUser(user);
     }
 }

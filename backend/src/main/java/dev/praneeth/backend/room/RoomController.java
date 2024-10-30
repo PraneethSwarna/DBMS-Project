@@ -1,11 +1,11 @@
 package dev.praneeth.backend.room;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping(path = "/api/v1/rooms")
+@RequestMapping(path = "/api/v1/room")
 public class RoomController {
 
     private final RoomService roomService;
@@ -14,23 +14,27 @@ public class RoomController {
         this.roomService = roomService;
     }
 
+    // Retrieve all rooms
     @GetMapping
-    public List<Room> GetRooms() {
-        return roomService.GetRooms();
+    public List<Room> getRooms() {
+        return roomService.getRooms();
     }
 
+    // Add a new room
     @PostMapping
-    public void AddRoom(@RequestBody Room room) {
-        roomService.AddRoom(room);
+    public void addRoom(@RequestBody Room room) {
+        roomService.addRoom(room);
     }
 
+    // Delete a room by ID
     @DeleteMapping(path = "/{roomId}")
-    public void DeleteRoom(@PathVariable("roomId") Integer roomId) {
-        roomService.DeleteRoom(roomId);
+    public void deleteRoom(@PathVariable("roomId") Integer roomId) {
+        roomService.deleteRoom(roomId);
     }
 
+    // Update a room by ID
     @PutMapping(path = "/{roomId}")
-    public void UpdateRoom(@PathVariable("roomId") Integer roomId, @RequestBody RoomUpdateRequest updateRequest) {
+    public void updateRoom(@PathVariable("roomId") Integer roomId, @RequestBody RoomUpdateRequest updateRequest) {
         roomService.updateRoom(roomId, updateRequest);
     }
 }

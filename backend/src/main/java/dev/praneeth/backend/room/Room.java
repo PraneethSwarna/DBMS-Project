@@ -1,24 +1,9 @@
 package dev.praneeth.backend.room;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "rooms")
 public class Room {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roomID;
-
-    @Column(name = "room_number", nullable = false, length = 10)
     private String roomNumber;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "room_type", nullable = false)
     private RoomType roomType;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
     private Status status;
 
     // Enum for room type
@@ -38,7 +23,8 @@ public class Room {
     // Constructors
     public Room() {}
 
-    public Room(String roomNumber, RoomType roomType, Status status) {
+    public Room(Integer roomID, String roomNumber, RoomType roomType, Status status) {
+        this.roomID = roomID;
         this.roomNumber = roomNumber;
         this.roomType = roomType;
         this.status = status;

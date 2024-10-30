@@ -1,61 +1,77 @@
-package dev.praneeth.backend.nurse;
+package dev.praneeth.backend.Nurse;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
-
 @Service
 public class NurseService {
 
-    private final NurseRepository nurseRepository;
+    private final NurseDao nurseDao;
 
-    public NurseService(NurseRepository nurseRepository) {
-        this.nurseRepository = nurseRepository;
+    public NurseService(NurseDao nurseDao) {
+        this.nurseDao = nurseDao;
     }
 
-    public List<Nurse> GetNurses() {
-        return nurseRepository.findAll();
+    // Get all nurses
+    public List<Nurse> getNurses() {
+        return nurseDao.getAllNurses();
     }
 
-    public void AddNurse(Nurse nurse) {
-        Optional<Nurse> nurseOptional = nurseRepository.findByEmail(nurse.getEmail());
-        if (nurseOptional.isPresent()) {
-            throw new IllegalStateException("Email already taken");
+    // Add a new nurse with unique email validation
+    public void addNurse(Nurse nurse) {
+        // Check if the email is already in use
+        Optional<Nurse> existingNurseByEmail = nurseDao.getNurseByEmail(nurse.getEmail());
+        if (existingNurseByEmail.isPresent()) {
+            throw new IllegalStateException("Email " + nurse.getEmail() + " is already in use by another nurse");
         }
-        nurseRepository.save(nurse);
+        nurseDao.addNurse(nurse);
     }
 
-    public void DeleteNurse(Integer nurseId) {
-        boolean exists = nurseRepository.existsById(nurseId);
-        if (!exists) {
-            throw new IllegalStateException("Nurse with id " + nurseId + " does not exist");
+    // Delete a nurse by ID with validation
+    public void deleteNurse(Integer nurseId) {
+        Optional<Nurse> nurseOptional = nurseDao.getNurseById(nurseId);
+        if (nurseOptional.isEmpty()) {
+            throw new IllegalStateException("Nurse with ID " + nurseId + " does not exist");
         }
-        nurseRepository.deleteById(nurseId);
+        nurseDao.deleteNurse(nurseId);
     }
 
+    // Update an existing nurse with validations for unique email
     @Transactional
-    public void UpdateNurse(Integer nurseId, NurseUpdateRequest updateRequest) {
-        Nurse nurse = nurseRepository.findById(nurseId)
-                .orElseThrow(() -> new IllegalStateException("Nurse with id " + nurseId + " does not exist"));
-
-        if (updateRequest.getFirstName() != null && !updateRequest.getFirstName().trim().isEmpty()) {
-            nurse.setFirstName(updateRequest.getFirstName());
+    public void updateNurse(Integer nurseId, NurseUpdateRequest updateRequest) {
+        Optional<Nurse> existingNurseOptional = nurseDao.getNurseById(nurseId);
+        if (existingNurseOptional.isEmpty()) {
+            throw new IllegalStateException("Nurse with ID " + nurseId + " does not exist");
         }
 
-        if (updateRequest.getLastName() != null && !updateRequest.getLastName().trim().isEmpty()) {
-            nurse.setLastName(updateRequest.getLastName());
-        }
+        Nurse nurse = existingNurseOptional.get();
 
-        if (updateRequest.getEmail() != null && !updateRequest.getEmail().trim().isEmpty()) {
-            Optional<Nurse> nurseWithEmail = nurseRepository.findByEmail(updateRequest.getEmail());
-            if (nurseWithEmail.isPresent() && !nurseWithEmail.get().getNurseID().equals(nurseId)) {
-                throw new IllegalStateException("Email already taken");
+        // Validate unique email if updating email field
+        if (updateRequest.getEmail() != null) {
+            Optional<Nurse> nurseWithSameEmail = nurseDao.getNurseByEmail(updateRequest.getEmail());
+            if (nurseWithSameEmail.isPresent() && !nurseWithSameEmail.get().getNurseID().equals(nurseId)) {
+                throw new IllegalStateException("Email " + updateRequest.getEmail() + " is already in use by another nurse");
             }
             nurse.setEmail(updateRequest.getEmail());
         }
 
-        nurseRepository.save(nurse);
+        // Update fields if present in request
+        if (updateRequest.getFirstName() != null) {
+            nurse.setFirstName(updateRequest.getFirstName());
+        }
+        if (updateRequest.getLastName() != null) {
+            nurse.setLastName(updateRequest.getLastName());
+        }
+        if (updateRequest.getPhoneNumber() != null) {
+            nurse.setPhoneNumber(updateRequest.getPhoneNumber());
+        }
+        if (updateRequest.getShift() != null) {
+            nurse.setShift(updateRequest.getShift());
+        }
+
+        nurseDao.updateNurse(nurseId, nurse);
     }
 }

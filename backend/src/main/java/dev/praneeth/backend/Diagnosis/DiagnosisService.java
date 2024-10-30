@@ -1,67 +1,63 @@
 package dev.praneeth.backend.Diagnosis;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DiagnosisService {
 
-    private final DiagnosisRepository diagnosisRepository;
+    private final DiagnosisDao diagnosisDao;
 
-    // Constructor-based dependency injection
-    public DiagnosisService(DiagnosisRepository diagnosisRepository) {
-        this.diagnosisRepository = diagnosisRepository;
+    public DiagnosisService(DiagnosisDao diagnosisDao) {
+        this.diagnosisDao = diagnosisDao;
     }
 
-    // Get all diagnosis records
+    // Get all diagnoses
     public List<Diagnosis> getDiagnoses() {
-        return diagnosisRepository.findAll();
+        return diagnosisDao.getAllDiagnoses();
     }
 
-    // Add a new diagnosis record
+    // Add a new diagnosis
     public void addDiagnosis(Diagnosis diagnosis) {
-        // You can implement any additional validation logic here if required
-        diagnosisRepository.save(diagnosis);
+        diagnosisDao.addDiagnosis(diagnosis);
     }
 
-    // Delete a diagnosis record by ID
-    public void deleteDiagnosis(Integer diagnosisId) {
-        boolean exists = diagnosisRepository.existsById(diagnosisId);
-        if (!exists) {
-            throw new IllegalStateException("Diagnosis with id " + diagnosisId + " does not exist");
+    // Delete a diagnosis by ID
+    public void deleteDiagnosis(Integer diagnosisID) {
+        Optional<Diagnosis> diagnosis = diagnosisDao.getDiagnosisById(diagnosisID);
+        if (diagnosis.isEmpty()) {
+            throw new IllegalStateException("Diagnosis with ID " + diagnosisID + " does not exist");
         }
-        diagnosisRepository.deleteById(diagnosisId);
+        diagnosisDao.deleteDiagnosis(diagnosisID);
     }
 
-    // Update an existing diagnosis record
+    // Update an existing diagnosis
     @Transactional
-    public void updateDiagnosis(Integer diagnosisId, DiagnosisUpdateRequest updateRequest) {
-        // Retrieve the diagnosis record or throw an exception if not found
-        Diagnosis diagnosis = diagnosisRepository.findById(diagnosisId)
-                .orElseThrow(() -> new IllegalStateException("Diagnosis with id " + diagnosisId + " does not exist"));
+    public void updateDiagnosis(Integer diagnosisID, DiagnosisUpdateRequest updateRequest) {
+        Optional<Diagnosis> existingDiagnosis = diagnosisDao.getDiagnosisById(diagnosisID);
+        if (existingDiagnosis.isEmpty()) {
+            throw new IllegalStateException("Diagnosis with ID " + diagnosisID + " does not exist");
+        }
 
-        // Update prescriptionID if it's valid
-        if (updateRequest.getPrescriptionID() != null) {
+        Diagnosis diagnosis = existingDiagnosis.get();
+
+        // Update fields if present in request
+        if (updateRequest.getPrescriptionID() != null && updateRequest.getPrescriptionID() > 0) {
             diagnosis.setPrescriptionID(updateRequest.getPrescriptionID());
         }
-
-        // Update labTestID if it's valid
-        if (updateRequest.getLabTestID() != null) {
+        if (updateRequest.getLabTestID() != null && updateRequest.getLabTestID() > 0) {
             diagnosis.setLabTestID(updateRequest.getLabTestID());
         }
-
-        // Update labResultID if it's valid
-        if (updateRequest.getLabResultID() != null) {
+        if (updateRequest.getLabResultID() != null && updateRequest.getLabResultID() > 0) {
             diagnosis.setLabResultID(updateRequest.getLabResultID());
         }
-
-        // Update notes if it's valid
-        if (updateRequest.getNotes() != null) {
+        if (updateRequest.getNotes() != null && !updateRequest.getNotes().isEmpty()) {
             diagnosis.setNotes(updateRequest.getNotes());
         }
 
-        // Save the updated diagnosis entity
-        diagnosisRepository.save(diagnosis);
+        diagnosisDao.updateDiagnosis(diagnosisID, diagnosis);
     }
 }

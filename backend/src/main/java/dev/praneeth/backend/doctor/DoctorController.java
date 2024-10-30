@@ -1,35 +1,35 @@
-package dev.praneeth.backend.doctor;
+package dev.praneeth.backend.Doctor;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/api/v1/doctors")
+@RequestMapping(path = "/api/v1/doctor")
 public class DoctorController {
 
-    private final DoctorService DoctorService;
+    private final DoctorService doctorService;
 
     public DoctorController(DoctorService doctorService) {
-        this.DoctorService = doctorService;
+        this.doctorService = doctorService;
     }
 
     @GetMapping
-    public List<Doctor> GetDoctors() {
-        return DoctorService.GetDoctors();
+    public List<Doctor> getDoctors() {
+        return doctorService.getDoctors();
     }
 
     @PostMapping
-    public void AddDoctor(@RequestBody Doctor doctor) {
-        DoctorService.AddDoctor(doctor);
+    public void addDoctor(@RequestBody Doctor doctor) {
+        doctorService.addDoctor(doctor);
     }
 
     @DeleteMapping(path = "/{doctorId}")
-    public void DeleteDoctor(@PathVariable("doctorId") Integer doctorId) {
-        DoctorService.DeleteDoctor(doctorId);
+    public void deleteDoctor(@PathVariable("doctorId") Integer doctorId) {
+        doctorService.deleteDoctor(doctorId);
     }
 
     @PutMapping(path = "/{doctorId}")
-    public void UpdateDoctor(@PathVariable("doctorId") Integer doctorId, @RequestBody DoctorUpdateRequest updateRequest) {
-        DoctorService.UpdateDoctor(doctorId, updateRequest);
+    public void updateDoctor(@PathVariable("doctorId") Integer doctorId, @RequestBody DoctorUpdateRequest updateRequest) {
+        doctorService.updateDoctor(doctorId, updateRequest);
     }
 }

@@ -1,34 +1,35 @@
-package dev.praneeth.backend.appointment;
+package dev.praneeth.backend.Appointment;
 
-import java.util.List;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1/appointments")
+@RequestMapping(path = "/api/v1/appointment")
 public class AppointmentController {
+
     private final AppointmentService appointmentService;
 
     public AppointmentController(AppointmentService appointmentService) {
-        this.appointmentService = appointmentService; // Corrected the capitalization
+        this.appointmentService = appointmentService;
     }
 
     @GetMapping
     public List<Appointment> getAppointments() {
-        return appointmentService.getAppointments(); // Correct capitalization
+        return appointmentService.getAppointments();
     }
 
     @PostMapping
     public void addAppointment(@RequestBody Appointment appointment) {
-        appointmentService.addAppointment(appointment); // Correct capitalization
+        appointmentService.addAppointment(appointment);
     }
 
     @DeleteMapping(path = "/{appointmentId}")
     public void deleteAppointment(@PathVariable("appointmentId") Integer appointmentId) {
-        appointmentService.deleteAppointment(appointmentId); // Correct capitalization
+        appointmentService.deleteAppointment(appointmentId);
     }
 
     @PutMapping(path = "/{appointmentId}")
     public void updateAppointment(@PathVariable("appointmentId") Integer appointmentId, @RequestBody AppointmentUpdateRequest updateRequest) {
-        appointmentService.updateAppointment(appointmentId, updateRequest); // Assuming updateAppointment method exists
+        appointmentService.updateAppointment(appointmentId, updateRequest);
     }
 }

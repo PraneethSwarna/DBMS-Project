@@ -1,7 +1,5 @@
 package dev.praneeth.backend.Diagnosis;
 
-// import java.util.List;
-
 // import org.springframework.boot.CommandLineRunner;
 // import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,23 +8,26 @@ import org.springframework.context.annotation.Configuration;
 public class DiagnosisConfig {
 
     // @Bean
-    // CommandLineRunner commandLineRunner(DiagnosisRepository diagnosisRepository) {
+    // CommandLineRunner commandLineRunner2(DiagnosisDao diagnosisDao) {
     //     return args -> {
+    //         // Create sample Diagnosis instances
     //         Diagnosis diagnosis1 = new Diagnosis(
-    //                 1,                        // Prescription ID (assumed)
-    //                 101,                      // Lab Test ID (assumed)
-    //                 201,                      // Lab Result ID (assumed)
-    //                 "Positive for infection"  // Notes
+    //                 1,                      // PrescriptionID
+    //                 101,                    // LabTestID
+    //                 201,                    // LabResultID
+    //                 "Positive for infection" // Notes
     //         );
 
     //         Diagnosis diagnosis2 = new Diagnosis(
-    //                 2,                        // Prescription ID (assumed)
-    //                 102,                      // Lab Test ID (assumed)
-    //                 202,                      // Lab Result ID (assumed)
+    //                 2,                        // PrescriptionID
+    //                 102,                      // LabTestID
+    //                 202,                      // LabResultID
     //                 "No abnormalities detected" // Notes
     //         );
 
-    //         diagnosisRepository.saveAll(List.of(diagnosis1, diagnosis2));
+    //         // Add the sample diagnoses to the database
+    //         diagnosisDao.addDiagnosis(diagnosis1);
+    //         diagnosisDao.addDiagnosis(diagnosis2);
     //     };
     // }
 }

@@ -1,65 +1,82 @@
-package dev.praneeth.backend.doctor;
+package dev.praneeth.backend.Doctor;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
-
 @Service
 public class DoctorService {
 
-    private final DoctorRepository doctorRepository;
+    private final DoctorDao doctorDao;
 
-    public DoctorService(DoctorRepository doctorRepository) {
-        this.doctorRepository = doctorRepository;
+    public DoctorService(DoctorDao doctorDao) {
+        this.doctorDao = doctorDao;
     }
 
-    public List<Doctor> GetDoctors() {
-        return doctorRepository.findAll();
+    // Get all doctors
+    public List<Doctor> getDoctors() {
+        return doctorDao.getAllDoctors();
     }
 
-    public void AddDoctor(Doctor doctor) {
-        Optional<Doctor> doctorOptional = doctorRepository.findByEmail(doctor.getEmail());
-        if (doctorOptional.isPresent()) {
-            throw new IllegalStateException("Email already taken");
+    // Add a new doctor
+    public void addDoctor(Doctor doctor) {
+        // Check if email is already in use
+        Optional<Doctor> existingDoctorByEmail = doctorDao.getDoctorByEmail(doctor.getEmail());
+        if (existingDoctorByEmail.isPresent()) {
+            throw new IllegalStateException("Email " + doctor.getEmail() + " is already in use");
         }
-        doctorRepository.save(doctor);
+
+        // Additional validations can be added here, such as phone number uniqueness if required
+        doctorDao.addDoctor(doctor);
     }
 
-    public void DeleteDoctor(Integer doctorId) {
-        boolean exists = doctorRepository.existsById(doctorId);
-        if (!exists) {
-            throw new IllegalStateException("Doctor with id " + doctorId + " does not exist");
+    // Delete a doctor by ID
+    public void deleteDoctor(Integer doctorID) {
+        Optional<Doctor> doctor = doctorDao.getDoctorById(doctorID);
+        if (doctor.isEmpty()) {
+            throw new IllegalStateException("Doctor with ID " + doctorID + " does not exist");
         }
-        doctorRepository.deleteById(doctorId);
+        doctorDao.deleteDoctor(doctorID);
     }
 
+    // Update an existing doctor
     @Transactional
-    public void UpdateDoctor(Integer doctorId, DoctorUpdateRequest updateRequest) {
-        Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new IllegalStateException("Doctor with id " + doctorId + " does not exist"));
-
-        if (updateRequest.getFirstName() != null && !updateRequest.getFirstName().trim().isEmpty()) {
-            doctor.setFirstName(updateRequest.getFirstName());
+    public void updateDoctor(Integer doctorID, DoctorUpdateRequest updateRequest) {
+        Optional<Doctor> existingDoctor = doctorDao.getDoctorById(doctorID);
+        if (existingDoctor.isEmpty()) {
+            throw new IllegalStateException("Doctor with ID " + doctorID + " does not exist");
         }
 
-        if (updateRequest.getLastName() != null && !updateRequest.getLastName().trim().isEmpty()) {
-            doctor.setLastName(updateRequest.getLastName());
-        }
+        Doctor doctor = existingDoctor.get();
 
-        if (updateRequest.getSpecialty() != null && !updateRequest.getSpecialty().trim().isEmpty()) {
-            doctor.setSpecialty(updateRequest.getSpecialty());
-        }
-
-        if (updateRequest.getEmail() != null && !updateRequest.getEmail().trim().isEmpty()) {
-            Optional<Doctor> doctorWithEmail = doctorRepository.findByEmail(updateRequest.getEmail());
-            if (doctorWithEmail.isPresent() && !doctorWithEmail.get().getDoctorID().equals(doctorId)) {
-                throw new IllegalStateException("Email already taken");
+        // Check for email uniqueness if the email is being updated
+        if (updateRequest.getEmail() != null && !updateRequest.getEmail().isEmpty()) {
+            Optional<Doctor> doctorWithSameEmail = doctorDao.getDoctorByEmail(updateRequest.getEmail());
+            if (doctorWithSameEmail.isPresent() && !doctorWithSameEmail.get().getDoctorID().equals(doctorID)) {
+                throw new IllegalStateException("Email " + updateRequest.getEmail() + " is already in use");
             }
             doctor.setEmail(updateRequest.getEmail());
         }
 
-        doctorRepository.save(doctor);
+        // Update other fields if present in request
+        if (updateRequest.getFirstName() != null && !updateRequest.getFirstName().isEmpty()) {
+            doctor.setFirstName(updateRequest.getFirstName());
+        }
+        if (updateRequest.getLastName() != null && !updateRequest.getLastName().isEmpty()) {
+            doctor.setLastName(updateRequest.getLastName());
+        }
+        if (updateRequest.getSpecialty() != null && !updateRequest.getSpecialty().isEmpty()) {
+            doctor.setSpecialty(updateRequest.getSpecialty());
+        }
+        if (updateRequest.getPhoneNumber() != null && !updateRequest.getPhoneNumber().isEmpty()) {
+            doctor.setPhoneNumber(updateRequest.getPhoneNumber());
+        }
+        if (updateRequest.getOfficeNumber() != null && !updateRequest.getOfficeNumber().isEmpty()) {
+            doctor.setOfficeNumber(updateRequest.getOfficeNumber());
+        }
+
+        doctorDao.updateDoctor(doctorID, doctor);
     }
 }

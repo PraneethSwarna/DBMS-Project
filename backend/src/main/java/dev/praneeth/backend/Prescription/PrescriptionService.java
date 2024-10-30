@@ -1,61 +1,44 @@
 package dev.praneeth.backend.Prescription;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PrescriptionService {
 
-    private final PrescriptionRepository prescriptionRepository;
+    private final PrescriptionDao prescriptionDao;
 
-    // Constructor-based dependency injection
-    public PrescriptionService(PrescriptionRepository prescriptionRepository) {
-        this.prescriptionRepository = prescriptionRepository;
+    public PrescriptionService(PrescriptionDao prescriptionDao) {
+        this.prescriptionDao = prescriptionDao;
     }
 
-    // Get all prescriptions
     public List<Prescription> getPrescriptions() {
-        return prescriptionRepository.findAll();
+        return prescriptionDao.getAllPrescriptions();
     }
 
-    // Add a new prescription
     public void addPrescription(Prescription prescription) {
-        prescriptionRepository.save(prescription);
+        prescriptionDao.addPrescription(prescription);
     }
 
-    // Delete a prescription by ID
     public void deletePrescription(Integer prescriptionID) {
-        boolean exists = prescriptionRepository.existsById(prescriptionID);
-        if (!exists) {
+        Optional<Prescription> prescription = prescriptionDao.getPrescriptionById(prescriptionID);
+        if (prescription.isEmpty()) {
             throw new IllegalStateException("Prescription with ID " + prescriptionID + " does not exist");
         }
-        prescriptionRepository.deleteById(prescriptionID);
+        prescriptionDao.deletePrescription(prescriptionID);
     }
 
-    // Update an existing prescription
     @Transactional
     public void updatePrescription(Integer prescriptionID, PrescriptionUpdateRequest updateRequest) {
-        Prescription prescription = prescriptionRepository.findById(prescriptionID)
-                .orElseThrow(() -> new IllegalStateException("Prescription with ID " + prescriptionID + " does not exist"));
-
-        // Update fields if valid
-        if (updateRequest.getPrescriptionDate() != null) {
-            prescription.setPrescriptionDate(updateRequest.getPrescriptionDate());
-        }
-        if (updateRequest.getDosage() != null && !updateRequest.getDosage().isEmpty()) {
-            prescription.setDosage(updateRequest.getDosage());
-        }
-        if (updateRequest.getFrequency() != null && !updateRequest.getFrequency().isEmpty()) {
-            prescription.setFrequency(updateRequest.getFrequency());
-        }
-        if (updateRequest.getDuration() != null && updateRequest.getDuration() > 0) {
-            prescription.setDuration(updateRequest.getDuration());
-        }
-        if (updateRequest.getInstructions() != null && !updateRequest.getInstructions().isEmpty()) {
-            prescription.setInstructions(updateRequest.getInstructions());
+        Optional<Prescription> existingPrescription = prescriptionDao.getPrescriptionById(prescriptionID);
+        if (existingPrescription.isEmpty()) {
+            throw new IllegalStateException("Prescription with ID " + prescriptionID + " does not exist");
         }
 
-        prescriptionRepository.save(prescription);
+        // Update the prescription in the DAO
+        prescriptionDao.updatePrescription(prescriptionID, updateRequest);
     }
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Designer from '../assets/Designer.png';
+import Designer from '../assets/Hospital_1.png';
 import logo from '../assets/logo.png';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import Loader from '../components/loader.jsx';
@@ -16,9 +16,9 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userInfo = localStorage.getItem('userInfo');
+    const userInfo = localStorage.getItem('token');
     if (userInfo) {
-      navigate('/');
+      navigate('/'); // redirect to user home page if already logged in
     }
   }, [navigate]);
 
@@ -26,15 +26,22 @@ const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const { data } = await axios.post('/api/auth/login', { email, password });
-      localStorage.setItem('userInfo', JSON.stringify(data));
-      setIsLoading(false);
-      navigate('/');
+        const response = await axios.post('http://localhost:8080/api/v1/user/login', { email, password });
+        
+        // Get token and userId from response.data
+        const { token, userId } = response.data;
+        
+        // Save only token and userId in localStorage
+        localStorage.setItem('token', token); // Save token
+        localStorage.setItem('userId', userId); // Save userId
+        
+        setIsLoading(false);
+        navigate('/'); // Redirect to homepage
     } catch (err) {
-      setIsLoading(false);
-      toast.error(err.response?.data?.message || 'Login failed');
+        setIsLoading(false);
+        toast.error(err.response?.data?.message || 'Login failed');
     }
-  };
+};
 
   return (
     <section className="min-h-screen flex items-center justify-center text-white relative">

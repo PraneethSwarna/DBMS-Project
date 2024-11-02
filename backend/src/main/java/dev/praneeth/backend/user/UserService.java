@@ -1,4 +1,4 @@
-package dev.praneeth.backend.user;
+package dev.praneeth.backend.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,20 +6,27 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import dev.praneeth.backend.JwtService;
 
 @Service
 public class UserService {
 
     private final UserDao userDao;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public UserService(UserDao userDao, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserDao userDao, BCryptPasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public List<User> GetUsers() {
         return userDao.getAllUsers();
+    }
+
+    public Optional<User> getUserById(Integer userID) {
+        return userDao.getUserById(userID);
     }
 
     public void AddUser(User user) {
@@ -28,9 +35,7 @@ public class UserService {
             throw new IllegalStateException("Email already taken");
         }
 
-        // Hash the password before saving the user
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         userDao.addUser(user);
     }
 
@@ -43,60 +48,65 @@ public class UserService {
     }
 
     public void updateUser(Integer userId, UserUpdateRequest updateRequest) {
-        // Retrieve the user or throw an exception if not found
         User user = userDao.getUserById(userId)
                 .orElseThrow(() -> new IllegalStateException("User with id " + userId + " does not exist"));
 
-        // Update firstName if it's valid
         if (updateRequest.getFirstName() != null && !updateRequest.getFirstName().trim().isEmpty()) {
             user.setFirstName(updateRequest.getFirstName());
         }
 
-        // Update lastName if it's valid
         if (updateRequest.getLastName() != null && !updateRequest.getLastName().trim().isEmpty()) {
             user.setLastName(updateRequest.getLastName());
         }
 
-        // Update dob if it's valid
         if (updateRequest.getDob() != null && !updateRequest.getDob().trim().isEmpty()) {
             try {
-                LocalDate parsedDob = LocalDate.parse(updateRequest.getDob()); // Convert dob from String to LocalDate
+                LocalDate parsedDob = LocalDate.parse(updateRequest.getDob());
                 user.setDob(parsedDob);
             } catch (DateTimeParseException e) {
                 throw new IllegalArgumentException("Invalid date format for dob: " + updateRequest.getDob());
             }
         }
 
-        // Update gender if it's not null
         if (updateRequest.getGender() != null) {
             user.setGender(updateRequest.getGender());
         }
 
-        // Update address if it's valid
         if (updateRequest.getAddress() != null && !updateRequest.getAddress().trim().isEmpty()) {
             user.setAddress(updateRequest.getAddress());
         }
 
-        // Update phone_number if it's valid
-        if (updateRequest.getPhone_number() != null && !updateRequest.getPhone_number().trim().isEmpty()) {
-            user.setPhone_number(updateRequest.getPhone_number());
+        if (updateRequest.getPhoneNumber() != null && !updateRequest.getPhoneNumber().trim().isEmpty()) {
+            user.setPhoneNumber(updateRequest.getPhoneNumber());
         }
 
-        // Check for duplicate email before updating
         if (updateRequest.getEmail() != null && !updateRequest.getEmail().trim().isEmpty()) {
             Optional<User> userWithEmail = userDao.getUserByEmail(updateRequest.getEmail());
-            if (userWithEmail.isPresent() && !userWithEmail.get().getPatientID().equals(userId)) {
+            if (userWithEmail.isPresent() && !userWithEmail.get().getUserID().equals(userId)) {
                 throw new IllegalStateException("Email already taken");
             }
             user.setEmail(updateRequest.getEmail());
         }
 
-        // If password is provided, hash it before saving
         if (updateRequest.getPassword() != null && !updateRequest.getPassword().trim().isEmpty()) {
             user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
         }
 
-        // Save the updated user entity
         userDao.updateUser(user);
+    }
+
+    // Updated validateLogin method to return UserLoginResponse with token
+    public Optional<UserLoginResponse> validateLogin(String email, String rawPassword) {
+        Optional<User> user = userDao.getUserByEmail(email);
+        if (user.isPresent() && passwordEncoder.matches(rawPassword, user.get().getPassword())) {
+            String token = jwtService.generateToken(user.get());
+            return Optional.of(new UserLoginResponse(
+                    user.get().getUserID(),
+                    user.get().getFirstName(),
+                    user.get().getLastName(),
+                    user.get().getEmail(),
+                    token));
+        }
+        return Optional.empty();
     }
 }

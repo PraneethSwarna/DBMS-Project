@@ -16,6 +16,19 @@ public class RoomDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // RowMapper to map SQL result set to Room object
+    @SuppressWarnings("unused")
+    private RowMapper<Room> roomRowMapper() {
+        return (rs, rowNum) -> {
+            Room room = new Room();
+            room.setRoomID(rs.getInt("roomID"));
+            room.setRoomNumber(rs.getString("roomNumber"));
+            room.setRoomType(Room.RoomType.valueOf(rs.getString("roomType")));
+            room.setStatus(Room.Status.valueOf(rs.getString("status")));
+            return room;
+        };
+    }
+
     // Retrieve all rooms
     public List<Room> getAllRooms() {
         String sql = "SELECT * FROM room";
@@ -63,15 +76,5 @@ public class RoomDao {
         );
     }
 
-    // RowMapper to map SQL result set to Room object
-    private RowMapper<Room> roomRowMapper() {
-        return (rs, rowNum) -> {
-            Room room = new Room();
-            room.setRoomID(rs.getInt("roomID"));
-            room.setRoomNumber(rs.getString("roomNumber"));
-            room.setRoomType(Room.RoomType.valueOf(rs.getString("roomType")));
-            room.setStatus(Room.Status.valueOf(rs.getString("status")));
-            return room;
-        };
-    }
+    
 }

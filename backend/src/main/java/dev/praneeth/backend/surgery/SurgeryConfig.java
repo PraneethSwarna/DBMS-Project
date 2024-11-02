@@ -1,16 +1,16 @@
-package dev.praneeth.backend.surgery;
+package dev.praneeth.backend.Surgery;
 
 // import java.time.LocalDate;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
+// import org.springframework.boot.CommandLineRunner;
+// import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SurgeryConfig {
 
-    @Bean
-    CommandLineRunner commandLineRunner(SurgeryDao surgeryDao) {
-        return args -> {
+    // @Bean
+    // CommandLineRunner commandLineRunner(SurgeryDao surgeryDao) {
+        // return args -> {
             // Surgery surgery1 = new Surgery(
             //         LocalDate.of(2023, 9, 10),
             //         "Appendectomy",
@@ -31,6 +31,6 @@ public class SurgeryConfig {
 
             // surgeryDao.addSurgery(surgery1);
             // surgeryDao.addSurgery(surgery2);
-        };
-    }
+        // };
+    // }
 }

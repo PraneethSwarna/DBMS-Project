@@ -53,7 +53,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/users', formData);
+      const response = await axios.post('http://localhost:8080/api/v1/user', formData);
       setUserInfo(response.data); // Save user data locally in component state
       toast.success('Account created successfully!');
       navigate('/');

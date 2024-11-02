@@ -1,4 +1,4 @@
-package dev.praneeth.backend.surgery;
+package dev.praneeth.backend.Surgery;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.*;

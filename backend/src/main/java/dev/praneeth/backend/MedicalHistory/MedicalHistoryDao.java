@@ -18,6 +18,7 @@ public class MedicalHistoryDao {
     }
 
     // RowMapper for MedicalHistory
+    @SuppressWarnings("unused")
     private RowMapper<MedicalHistory> medicalHistoryRowMapper = (rs, rowNum) -> new MedicalHistory(
         rs.getInt("historyID"),
         rs.getObject("record_date", LocalDate.class),

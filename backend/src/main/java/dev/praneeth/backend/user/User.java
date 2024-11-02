@@ -1,10 +1,10 @@
-package dev.praneeth.backend.user;
+package dev.praneeth.backend.User;
 
 import java.time.LocalDate;
 import java.time.Period;
 
 public class User {
-    private Integer patientID;
+    private Integer userID;
     private String firstName;
     private String lastName;
     private LocalDate dob;
@@ -12,7 +12,7 @@ public class User {
     private Integer age;
     private Gender gender;
     private String address;
-    private String phone_number;
+    private String phoneNumber;
     private String email;
     private String password;
 
@@ -26,25 +26,25 @@ public class User {
     // Constructors
     public User() {}
 
-    public User(Integer patientID, String firstName, String lastName, LocalDate dob, Gender gender, String address, String phone_number, String email, String password) {
-        this.patientID = patientID;
+    public User(Integer userID, String firstName, String lastName, LocalDate dob, Gender gender, String address, String phoneNumber, String email, String password) {
+        this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
         this.gender = gender;
         this.address = address;
-        this.phone_number = phone_number;
+        this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
     }
 
     // Getters and Setters
-    public Integer getPatientID() {
-        return patientID;
+    public Integer getUserID() {
+        return userID;
     }
 
-    public void setPatientID(Integer patientID) {
-        this.patientID = patientID;
+    public void setUserID(Integer userID) {
+        this.userID = userID;
     }
 
     public String getFirstName() {
@@ -91,12 +91,12 @@ public class User {
         this.address = address;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
@@ -118,14 +118,14 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "patientID=" + patientID +
+                "userID=" + userID +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", dob=" + dob +
                 ", age=" + getAge() +
                 ", gender=" + gender +
                 ", address='" + address + '\'' +
-                ", phone_number='" + phone_number + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';

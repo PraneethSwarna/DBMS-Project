@@ -1,10 +1,9 @@
-package dev.praneeth.backend.surgery;
+package dev.praneeth.backend.Surgery;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,63 +16,109 @@ public class SurgeryDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // RowMapper for Surgery object
-    private RowMapper<Surgery> surgeryRowMapper = new RowMapper<>() {
-        @Override
-        public Surgery mapRow(@SuppressWarnings("null") ResultSet rs, int rowNum) throws SQLException {
-            Surgery surgery = new Surgery();
-            surgery.setSurgeryID(rs.getInt("surgery_id"));
-            surgery.setSurgeryDate(rs.getDate("surgery_date").toLocalDate());
-            surgery.setSurgeryType(rs.getString("surgery_type"));
-            surgery.setOutcome(rs.getString("outcome"));
-            surgery.setPrescriptionID(rs.getInt("prescription_id"));
-            surgery.setNotes(rs.getString("notes"));
-            surgery.setDoctorID(rs.getInt("doctor_id"));
-            return surgery;
-        }
+    @SuppressWarnings("unused")
+    private RowMapper<Surgery> surgeryRowMapper = (rs, rowNum) -> {
+        Surgery surgery = new Surgery();
+        surgery.setSurgeryID(rs.getInt("surgeryID"));
+        surgery.setSurgeryDate(rs.getDate("surgeryDate") != null ? rs.getDate("surgeryDate").toLocalDate() : null);
+        surgery.setSurgeryType(Surgery.SurgeryType.valueOf(rs.getString("surgeryType")));
+        surgery.setOutcome(rs.getString("outcome"));
+        surgery.setNotes(rs.getString("notes"));
+        surgery.setPatientID(rs.getInt("patientID"));
+
+        // Fetch doctors and prescriptions separately
+        surgery.setDoctorIDs(getDoctorIDsForSurgery(surgery.getSurgeryID()));
+        surgery.setPrescriptionIDs(getPrescriptionIDsForSurgery(surgery.getSurgeryID()));
+        return surgery;
     };
 
-    // Fetch all surgeries
-    public List<Surgery> getAllSurgeries() {
-        String sql = "SELECT * FROM surgery";
-        return jdbcTemplate.query(sql, surgeryRowMapper);
-    }
-
-    // Fetch surgery by ID
     public Optional<Surgery> getSurgeryById(Integer surgeryID) {
-        String sql = "SELECT * FROM surgery WHERE surgery_id = ?";
+        String sql = "SELECT * FROM surgery WHERE surgeryID = ?";
         List<Surgery> surgeries = jdbcTemplate.query(sql, surgeryRowMapper, surgeryID);
-        return surgeries.stream().findFirst(); // Return as Optional
+        return surgeries.stream().findFirst();
     }
 
-    // Add a new surgery
+    public List<Surgery> getSurgeries() {
+        String sql = "SELECT * FROM surgery";
+        List<Surgery> surgeries = jdbcTemplate.query(sql, surgeryRowMapper);
+
+        for (Surgery surgery : surgeries) {
+            List<Integer> doctorIDs = getDoctorIDsForSurgery(surgery.getSurgeryID());
+            List<Integer> prescriptionIDs = getPrescriptionIDsForSurgery(surgery.getSurgeryID());
+            surgery.setDoctorIDs(doctorIDs);
+            surgery.setPrescriptionIDs(prescriptionIDs);
+        }
+
+        return surgeries;
+    }
+
+    @SuppressWarnings("unused")
     public void addSurgery(Surgery surgery) {
-        String sql = "INSERT INTO surgery (surgery_date, surgery_type, outcome, prescription_id, notes, doctor_id) VALUES (?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                surgery.getSurgeryDate(),
-                surgery.getSurgeryType(),
-                surgery.getOutcome(),
-                surgery.getPrescriptionID(),
-                surgery.getNotes(),
-                surgery.getDoctorID());
+        String sql = "INSERT INTO surgery (surgeryDate, surgeryType, outcome, notes, patientID) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, surgery.getSurgeryDate(), surgery.getSurgeryType() != null ? surgery.getSurgeryType().name() : null, surgery.getOutcome(), surgery.getNotes(), surgery.getPatientID());
+        
+        // Re-query for the surgeryID instead of relying solely on LAST_INSERT_ID()
+        Integer surgeryID = jdbcTemplate.queryForObject("SELECT surgeryID FROM surgery WHERE surgeryDate = ? AND patientID = ? ORDER BY surgeryID DESC LIMIT 1",
+            Integer.class, surgery.getSurgeryDate(), surgery.getPatientID());
+        if (surgeryID == null) throw new IllegalStateException("Failed to retrieve surgery ID after insert.");
+        
+        // Insert doctor and prescription relations using validated IDs
+        if (surgery.getDoctorIDs() != null) {
+            for (Integer doctorID : surgery.getDoctorIDs()) {
+                jdbcTemplate.update("INSERT INTO surgery_doctor (surgeryID, doctorID) VALUES (?, ?)", surgeryID, doctorID);
+            }
+        }
+        if (surgery.getPrescriptionIDs() != null) {
+            for (Integer prescriptionID : surgery.getPrescriptionIDs()) {
+                jdbcTemplate.update("INSERT INTO surgery_prescription (surgeryID, prescriptionID) VALUES (?, ?)", surgeryID, prescriptionID);
+            }
+        }
     }
+    
 
-    // Delete a surgery by ID
     public void deleteSurgery(Integer surgeryID) {
-        String sql = "DELETE FROM surgery WHERE surgery_id = ?";
+        String sql = "DELETE FROM surgery WHERE surgeryID = ?";
         jdbcTemplate.update(sql, surgeryID);
     }
 
-    // Update a surgery by ID
     public void updateSurgery(Integer surgeryID, Surgery surgery) {
-        String sql = "UPDATE surgery SET surgery_date = ?, surgery_type = ?, outcome = ?, prescription_id = ?, notes = ?, doctor_id = ? WHERE surgery_id = ?";
-        jdbcTemplate.update(sql,
+        String sql = "UPDATE surgery SET surgeryDate = ?, surgeryType = ?, outcome = ?, notes = ?, patientID = ? WHERE surgeryID = ?";
+        jdbcTemplate.update(
+                sql,
                 surgery.getSurgeryDate(),
-                surgery.getSurgeryType(),
+                surgery.getSurgeryType() != null ? surgery.getSurgeryType().name() : null,
                 surgery.getOutcome(),
-                surgery.getPrescriptionID(),
                 surgery.getNotes(),
-                surgery.getDoctorID(),
+                surgery.getPatientID(),
                 surgeryID);
+    }
+
+    public void updateDoctorsForSurgery(Integer surgeryID, List<Integer> addDoctorIDs, List<Integer> removeDoctorIDs) {
+        String addDoctorSql = "INSERT INTO surgery_doctor (surgeryID, doctorID) VALUES (?, ?)";
+        addDoctorIDs.forEach(doctorID -> jdbcTemplate.update(addDoctorSql, surgeryID, doctorID));
+
+        String removeDoctorSql = "DELETE FROM surgery_doctor WHERE surgeryID = ? AND doctorID = ?";
+        removeDoctorIDs.forEach(doctorID -> jdbcTemplate.update(removeDoctorSql, surgeryID, doctorID));
+    }
+
+    public void updatePrescriptionsForSurgery(Integer surgeryID, List<Integer> addPrescriptionIDs,
+            List<Integer> removePrescriptionIDs) {
+        String addPrescriptionSql = "INSERT INTO surgery_prescription (surgeryID, prescriptionID) VALUES (?, ?)";
+        addPrescriptionIDs
+                .forEach(prescriptionID -> jdbcTemplate.update(addPrescriptionSql, surgeryID, prescriptionID));
+
+        String removePrescriptionSql = "DELETE FROM surgery_prescription WHERE surgeryID = ? AND prescriptionID = ?";
+        removePrescriptionIDs
+                .forEach(prescriptionID -> jdbcTemplate.update(removePrescriptionSql, surgeryID, prescriptionID));
+    }
+
+    private List<Integer> getDoctorIDsForSurgery(Integer surgeryID) {
+        String sql = "SELECT doctorID FROM surgery_doctor WHERE surgeryID = ?";
+        return jdbcTemplate.queryForList(sql, Integer.class, surgeryID);
+    }
+
+    private List<Integer> getPrescriptionIDsForSurgery(Integer surgeryID) {
+        String sql = "SELECT prescriptionID FROM surgery_prescription WHERE surgeryID = ?";
+        return jdbcTemplate.queryForList(sql, Integer.class, surgeryID);
     }
 }

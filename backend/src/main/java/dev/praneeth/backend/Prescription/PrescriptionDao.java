@@ -21,6 +21,7 @@ public class PrescriptionDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @SuppressWarnings("unused")
     private final RowMapper<Prescription> prescriptionRowMapper = (rs, rowNum) -> {
         Prescription prescription = new Prescription();
         prescription.setPrescriptionID(rs.getInt("prescriptionID"));
@@ -32,6 +33,7 @@ public class PrescriptionDao {
         return prescription;
     };
 
+    @SuppressWarnings("unused")
     private final RowMapper<PrescriptionMedicine> prescriptionMedicineRowMapper = (rs, rowNum) -> {
         PrescriptionMedicine medicine = new PrescriptionMedicine();
         medicine.setPrescriptionID(rs.getInt("prescriptionID"));

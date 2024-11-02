@@ -1,4 +1,4 @@
-package dev.praneeth.backend.user;
+package dev.praneeth.backend.User;
 
 // import org.springframework.boot.CommandLineRunner;
 // import org.springframework.context.annotation.Bean;

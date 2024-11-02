@@ -1,0 +1,96 @@
+[33mcommit d47bca565d9a88f90808ca369f0e8abd8230fa0b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Praneeth Chandra <spraneethchandra123@gmail.com>
+Date:   Thu Oct 31 01:35:26 2024 +0530
+
+    naming convention
+
+[33mcommit 18fcd5d283a0eb3e6fae4ef0b38ad4825d94d512[m
+Author: Praneeth Chandra <spraneethchandra123@gmail.com>
+Date:   Fri Oct 4 17:39:59 2024 +0530
+
+    switched from jpa to jdbc (users)
+
+[33mcommit daa93db4e218de04565702daf5cd7604f5dd451c[m
+Merge: efc32d9 9b90800
+Author: Praneeth Chandra <spraneethchandra123@gmail.com>
+Date:   Wed Oct 2 22:48:41 2024 +0530
+
+    Merge pull request #3 from rawat2004gaurav/main
+    
+    Entities Added
+
+[33mcommit efc32d9d12e4084ff9d58c9727f45402f7cf8a2e[m
+Author: Praneeth Chandra <spraneethchandra123@gmail.com>
+Date:   Wed Oct 2 22:39:27 2024 +0530
+
+    added first page
+
+[33mcommit 9b90800b896aa81319199177bd83125bb6c52b8f[m
+Author: Gaurav Rawat <gaurav.rawat.cse22@itbhu.ac.in>
+Date:   Wed Oct 2 20:31:38 2024 +0530
+
+    Entities Added
+
+[33mcommit b5617cca2a5623ac6391151e8b7f6ca3468e50bd[m
+Author: Gaurav Rawat <gaurav.rawat.cse22@itbhu.ac.in>
+Date:   Tue Sep 24 16:49:26 2024 +0530
+
+    Surgery Entity Added
+
+[33mcommit 69651d60b0ca1be2828cd6dc585a22544aefe8e1[m
+Merge: e92d16a 9a9cb3e
+Author: Praneeth Chandra <spraneethchandra123@gmail.com>
+Date:   Tue Sep 24 15:46:38 2024 +0530
+
+    Merge pull request #1 from Prachi19112003/main
+    
+    Added HomeConsultation, Hospitalization, Room, and Srvs entities.
+
+[33mcommit e92d16a8fab743a1ac8f1ad627726de8c002eaa0[m
+Author: unicoDErn0 <punno20202004@gamil.com>
+Date:   Mon Sep 23 22:02:03 2024 +0530
+
+    Your commit message
+
+[33mcommit 655d9e25df4efdfeba42e00f8d6064d62d2386a3[m
+Merge: 1a69304 ced2739
+Author: unicoDErn0 <punno20202004@gamil.com>
+Date:   Mon Sep 23 21:59:50 2024 +0530
+
+    Merge branch 'main' of https://github.com/mazerunner1001/DBMS-Project
+
+[33mcommit 1a69304f947144ddfebbe554aaf6c1a0ce17f7c7[m
+Author: unicoDErn0 <punno20202004@gamil.com>
+Date:   Mon Sep 23 21:24:43 2024 +0530
+
+    added change 2
+
+[33mcommit 9a9cb3ee02919bcbc04292fad4b66a33022f94c7[m
+Author: Prachi19112003 <prachiiimalhotra@gmail.com>
+Date:   Mon Sep 23 21:05:08 2024 +0530
+
+    Added HomeConsultation, Hospitalization, Room, and Srvs entities.
+
+[33mcommit ced2739bce2f4eb50056ed08382dc5e2d3588480[m[33m ([m[1;31mDBMS-project/Purnima[m[33m)[m
+Author: Praneeth Chandra <spraneethchandra123@gmail.com>
+Date:   Wed Sep 18 02:46:40 2024 +0530
+
+    nothin
+
+[33mcommit f0589714782e5f3e2649fcf5a9fc4bd0637acf73[m
+Author: Praneeth Chandra <spraneethchandra123@gmail.com>
+Date:   Wed Sep 18 02:31:51 2024 +0530
+
+    minor changes
+
+[33mcommit 6c0548fb4dbb335026f73aa4cd2ef12ee1da0cf1[m
+Author: Praneeth Chandra <spraneethchandra123@gmail.com>
+Date:   Wed Sep 18 02:27:00 2024 +0530
+
+    Final setup and user entity added
+
+[33mcommit 838c61418d595e4ea92f0aee62d874b8963e3d8f[m
+Author: Praneeth Chandra <spraneethchandra123@gmail.com>
+Date:   Sun Sep 15 23:12:51 2024 +0530
+
+    first commit

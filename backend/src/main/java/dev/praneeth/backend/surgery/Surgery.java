@@ -1,29 +1,30 @@
-package dev.praneeth.backend.surgery;
+package dev.praneeth.backend.Surgery;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Surgery {
     private Integer surgeryID;
     private LocalDate surgeryDate;
-    private String surgeryType;
+    private SurgeryType surgeryType;
     private String outcome;
-    private Integer prescriptionID;
+    private List<Integer> prescriptionIDs;
     private String notes;
-    private Integer doctorID;
+    private List<Integer> doctorIDs;
+    private Integer patientID;
 
-    // Constructors
+    // Constructors, Getters, and Setters
     public Surgery() {}
 
-    public Surgery(LocalDate surgeryDate, String surgeryType, String outcome, Integer prescriptionID, String notes, Integer doctorID) {
+    public Surgery(LocalDate surgeryDate, SurgeryType surgeryType, String outcome, List<Integer> prescriptionIDs, String notes, List<Integer> doctorIDs) {
         this.surgeryDate = surgeryDate;
         this.surgeryType = surgeryType;
         this.outcome = outcome;
-        this.prescriptionID = prescriptionID;
+        this.prescriptionIDs = prescriptionIDs;
         this.notes = notes;
-        this.doctorID = doctorID;
+        this.doctorIDs = doctorIDs;
     }
 
-    // Getters and Setters
     public Integer getSurgeryID() {
         return surgeryID;
     }
@@ -40,11 +41,11 @@ public class Surgery {
         this.surgeryDate = surgeryDate;
     }
 
-    public String getSurgeryType() {
+    public SurgeryType getSurgeryType() {
         return surgeryType;
     }
 
-    public void setSurgeryType(String surgeryType) {
+    public void setSurgeryType(SurgeryType surgeryType) {
         this.surgeryType = surgeryType;
     }
 
@@ -56,12 +57,12 @@ public class Surgery {
         this.outcome = outcome;
     }
 
-    public Integer getPrescriptionID() {
-        return prescriptionID;
+    public List<Integer> getPrescriptionIDs() {
+        return prescriptionIDs;
     }
 
-    public void setPrescriptionID(Integer prescriptionID) {
-        this.prescriptionID = prescriptionID;
+    public void setPrescriptionIDs(List<Integer> prescriptionIDs) {
+        this.prescriptionIDs = prescriptionIDs;
     }
 
     public String getNotes() {
@@ -72,12 +73,20 @@ public class Surgery {
         this.notes = notes;
     }
 
-    public Integer getDoctorID() {
-        return doctorID;
+    public List<Integer> getDoctorIDs() {
+        return doctorIDs;
     }
 
-    public void setDoctorID(Integer doctorID) {
-        this.doctorID = doctorID;
+    public void setDoctorIDs(List<Integer> doctorIDs) {
+        this.doctorIDs = doctorIDs;
+    }
+
+    public Integer getPatientID() {
+        return patientID;
+    }
+
+    public void setPatientID(Integer patientID) {
+        this.patientID = patientID;
     }
 
     @Override
@@ -85,11 +94,25 @@ public class Surgery {
         return "Surgery{" +
                 "surgeryID=" + surgeryID +
                 ", surgeryDate=" + surgeryDate +
-                ", surgeryType='" + surgeryType + '\'' +
+                ", surgeryType=" + surgeryType +
                 ", outcome='" + outcome + '\'' +
-                ", prescriptionID=" + prescriptionID +
+                ", prescriptionIDs=" + prescriptionIDs +
                 ", notes='" + notes + '\'' +
-                ", doctorID=" + doctorID +
+                ", doctorIDs=" + doctorIDs +
+                ", patientID=" + patientID +
                 '}';
+    }
+
+    public enum SurgeryType {
+        APPENDECTOMY,
+        CHOLECYSTECTOMY,
+        HERNIA_REPAIR,
+        MASTECTOMY,
+        C_SECTION,
+        HIP_REPLACEMENT,
+        KNEE_REPLACEMENT,
+        CORONARY_ARTERY_BYPASS,
+        GASTRIC_BYPASS,
+        TONSILLECTOMY
     }
 }

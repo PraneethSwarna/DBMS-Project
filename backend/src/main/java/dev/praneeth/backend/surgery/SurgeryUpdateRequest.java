@@ -1,17 +1,19 @@
-package dev.praneeth.backend.surgery;
+package dev.praneeth.backend.Surgery;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class SurgeryUpdateRequest {
-
     private LocalDate surgeryDate;
-    private String surgeryType;
+    private Surgery.SurgeryType surgeryType;
     private String outcome;
-    private Integer prescriptionID;
-    private Integer doctorID;
+    private List<Integer> addPrescriptionIDs;
+    private List<Integer> removePrescriptionIDs;
+    private List<Integer> addDoctorIDs;
+    private List<Integer> removeDoctorIDs;
     private String notes;
 
-    // Getters and Setters
+    // Getters and Setters for all fields
     public LocalDate getSurgeryDate() {
         return surgeryDate;
     }
@@ -20,11 +22,11 @@ public class SurgeryUpdateRequest {
         this.surgeryDate = surgeryDate;
     }
 
-    public String getSurgeryType() {
+    public Surgery.SurgeryType getSurgeryType() {
         return surgeryType;
     }
 
-    public void setSurgeryType(String surgeryType) {
+    public void setSurgeryType(Surgery.SurgeryType surgeryType) {
         this.surgeryType = surgeryType;
     }
 
@@ -36,20 +38,36 @@ public class SurgeryUpdateRequest {
         this.outcome = outcome;
     }
 
-    public Integer getPrescriptionID() {
-        return prescriptionID;
+    public List<Integer> getAddPrescriptionIDs() {
+        return addPrescriptionIDs;
     }
 
-    public void setPrescriptionID(Integer prescriptionID) {
-        this.prescriptionID = prescriptionID;
+    public void setAddPrescriptionIDs(List<Integer> addPrescriptionIDs) {
+        this.addPrescriptionIDs = addPrescriptionIDs;
     }
 
-    public Integer getDoctorID() {
-        return doctorID;
+    public List<Integer> getRemovePrescriptionIDs() {
+        return removePrescriptionIDs;
     }
 
-    public void setDoctorID(Integer doctorID) {
-        this.doctorID = doctorID;
+    public void setRemovePrescriptionIDs(List<Integer> removePrescriptionIDs) {
+        this.removePrescriptionIDs = removePrescriptionIDs;
+    }
+
+    public List<Integer> getAddDoctorIDs() {
+        return addDoctorIDs;
+    }
+
+    public void setAddDoctorIDs(List<Integer> addDoctorIDs) {
+        this.addDoctorIDs = addDoctorIDs;
+    }
+
+    public List<Integer> getRemoveDoctorIDs() {
+        return removeDoctorIDs;
+    }
+
+    public void setRemoveDoctorIDs(List<Integer> removeDoctorIDs) {
+        this.removeDoctorIDs = removeDoctorIDs;
     }
 
     public String getNotes() {

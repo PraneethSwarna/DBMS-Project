@@ -1,4 +1,4 @@
-package dev.praneeth.backend.surgery;
+package dev.praneeth.backend.Surgery;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,17 +15,15 @@ public class SurgeryService {
         this.surgeryDao = surgeryDao;
     }
 
-    // Get all surgeries
     public List<Surgery> getSurgeries() {
-        return surgeryDao.getAllSurgeries();
+        return surgeryDao.getSurgeries();
     }
 
-    // Add a new surgery
+    @Transactional
     public void addSurgery(Surgery surgery) {
         surgeryDao.addSurgery(surgery);
     }
 
-    // Delete a surgery by ID
     public void deleteSurgery(Integer surgeryID) {
         Optional<Surgery> surgery = surgeryDao.getSurgeryById(surgeryID);
         if (surgery.isEmpty()) {
@@ -34,7 +32,6 @@ public class SurgeryService {
         surgeryDao.deleteSurgery(surgeryID);
     }
 
-    // Update an existing surgery
     @Transactional
     public void updateSurgery(Integer surgeryID, SurgeryUpdateRequest updateRequest) {
         Optional<Surgery> existingSurgery = surgeryDao.getSurgeryById(surgeryID);
@@ -44,26 +41,31 @@ public class SurgeryService {
 
         Surgery surgery = existingSurgery.get();
 
-        // Update fields if present in request
         if (updateRequest.getSurgeryDate() != null) {
             surgery.setSurgeryDate(updateRequest.getSurgeryDate());
         }
-        if (updateRequest.getSurgeryType() != null && !updateRequest.getSurgeryType().isEmpty()) {
+        if (updateRequest.getSurgeryType() != null) {
             surgery.setSurgeryType(updateRequest.getSurgeryType());
         }
-        if (updateRequest.getOutcome() != null && !updateRequest.getOutcome().isEmpty()) {
+        if (updateRequest.getOutcome() != null) {
             surgery.setOutcome(updateRequest.getOutcome());
         }
-        if (updateRequest.getPrescriptionID() != null && updateRequest.getPrescriptionID() > 0) {
-            surgery.setPrescriptionID(updateRequest.getPrescriptionID());
-        }
-        if (updateRequest.getDoctorID() != null && updateRequest.getDoctorID() > 0) {
-            surgery.setDoctorID(updateRequest.getDoctorID());
-        }
-        if (updateRequest.getNotes() != null && !updateRequest.getNotes().isEmpty()) {
+        if (updateRequest.getNotes() != null) {
             surgery.setNotes(updateRequest.getNotes());
         }
 
         surgeryDao.updateSurgery(surgeryID, surgery);
+
+        if (updateRequest.getAddDoctorIDs() != null || updateRequest.getRemoveDoctorIDs() != null) {
+            List<Integer> addDoctorIDs = updateRequest.getAddDoctorIDs() != null ? updateRequest.getAddDoctorIDs() : List.of();
+            List<Integer> removeDoctorIDs = updateRequest.getRemoveDoctorIDs() != null ? updateRequest.getRemoveDoctorIDs() : List.of();
+            surgeryDao.updateDoctorsForSurgery(surgeryID, addDoctorIDs, removeDoctorIDs);
+        }
+
+        if (updateRequest.getAddPrescriptionIDs() != null || updateRequest.getRemovePrescriptionIDs() != null) {
+            List<Integer> addPrescriptionIDs = updateRequest.getAddPrescriptionIDs() != null ? updateRequest.getAddPrescriptionIDs() : List.of();
+            List<Integer> removePrescriptionIDs = updateRequest.getRemovePrescriptionIDs() != null ? updateRequest.getRemovePrescriptionIDs() : List.of();
+            surgeryDao.updatePrescriptionsForSurgery(surgeryID, addPrescriptionIDs, removePrescriptionIDs);
+        }
     }
 }

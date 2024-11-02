@@ -1,6 +1,6 @@
-package dev.praneeth.backend.user;
+package dev.praneeth.backend.User;
 
-import dev.praneeth.backend.user.User.Gender;
+import dev.praneeth.backend.User.User.Gender;
 
 public class UserUpdateRequest {
     
@@ -9,7 +9,7 @@ public class UserUpdateRequest {
     private String dob; // Keep this for input
     private Gender gender;
     private String address;
-    private String phone_number;
+    private String phoneNumber;
     private String email;
     private String password;
 
@@ -56,12 +56,12 @@ public class UserUpdateRequest {
         this.address = address;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {

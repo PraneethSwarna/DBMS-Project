@@ -1,21 +1,27 @@
 TRUNCATE TABLE users;
 
-ALTER TABLE users AUTO_INCREMENT = 1;
+DELETE FROM surgery_doctor WHERE surgeryID IN (SELECT surgeryID FROM surgery);
+DELETE FROM surgery_prescription WHERE surgeryID IN (SELECT surgeryID FROM surgery);
+
+DELETE FROM prescription_medicine WHERE prescriptionID IN (SELECT prescriptionID FROM prescription);
+DELETE FROM diagnosis;
+
+ALTER TABLE diagnosis AUTO_INCREMENT = 1;
 
 use dbms;
 
-ALTER TABLE rooms
-RENAME TO room;
+ALTER TABLE users
+RENAME TO user;
 
-ALTER TABLE appointment
-RENAME COLUMN appointment_date TO appointmentDate;
+ALTER TABLE user
+RENAME COLUMN patientID TO userID;
 
 select * from users;
 
 DESCRIBE diagnosis;
 
-ALTER TABLE room
-RENAME COLUMN room_type TO roomType;
+ALTER TABLE user
+RENAME COLUMN phone_number TO phoneNumber;
 
 DROP TABLE prescription;
 
@@ -38,4 +44,31 @@ CREATE TABLE PrescriptionMedicine (
 
 DELETE from prescription where prescriptionID = 6;
 
+CREATE TABLE surgery (
+    surgeryID INT AUTO_INCREMENT PRIMARY KEY,
+    surgeryDate DATE,
+    surgeryType VARCHAR(255) NOT NULL,
+    outcome VARCHAR(255),
+    notes TEXT,
+    patientID INT NOT NULL,
+    FOREIGN KEY (patientID) REFERENCES user(patientID)
+);
+
+CREATE TABLE surgery_doctor (
+    surgeryID INT,
+    doctorID INT,
+    PRIMARY KEY (surgeryID, doctorID),
+    FOREIGN KEY (surgeryID) REFERENCES surgery(surgeryID),
+    FOREIGN KEY (doctorID) REFERENCES doctor(doctorID)
+);
+
+CREATE TABLE surgery_prescription (
+    surgeryID INT,
+    prescriptionID INT,
+    PRIMARY KEY (surgeryID, prescriptionID),
+    FOREIGN KEY (surgeryID) REFERENCES surgery(surgeryID),
+    FOREIGN KEY (prescriptionID) REFERENCES prescription(prescriptionID)
+);
+
+DROP TABLE surgery;
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Sidebar from '../components/Sidebar';
-import Navbar from '../components/NavbarDashboard';
-import DoctorDashboard from '../components/DoctorDashboard';
+import Sidebar from '../../components/Sidebar';
+import Navbar from '../../components/NavbarDashboard';
+import DoctorDashboard from '../../components/DoctorDashboard';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

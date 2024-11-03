@@ -1,6 +1,8 @@
 package dev.praneeth.backend.MedicalHistory;
 
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +20,9 @@ public class MedicalHistoryService {
     }
 
     public void addMedicalHistory(MedicalHistory medicalHistory) {
+        medicalHistory.setRecordDate(LocalDate.now()); // Set recordDate to current date
         medicalHistoryDao.addMedicalHistory(medicalHistory);
-    }
+    }    
 
     public void deleteMedicalHistory(Integer historyId) {
         Optional<MedicalHistory> existingHistory = medicalHistoryDao.getMedicalHistoryById(historyId);
@@ -42,8 +45,8 @@ public class MedicalHistoryService {
         }
 
         MedicalHistory medicalHistory = existingHistory.get();
+        medicalHistory.setRecordDate(LocalDate.now()); // Set recordDate to current date
 
-        // Update fields if present in the request
         if (updateRequest.getPatientId() != null) {
             medicalHistory.setPatientID(updateRequest.getPatientId());
         }
@@ -57,7 +60,7 @@ public class MedicalHistoryService {
             medicalHistory.setNotes(updateRequest.getNotes());
         }
 
-        // Update in the DAO
         medicalHistoryDao.updateMedicalHistory(medicalHistory);
     }
+
 }

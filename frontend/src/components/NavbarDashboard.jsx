@@ -1,11 +1,9 @@
 import { FaUserCircle } from 'react-icons/fa';
 
-const Navbardashboard = ({ isSidebarOpen }) => {
+const Navbardashboard = () => {
   return (
     <nav
-      className={`bg-white shadow-md p-4 flex justify-between items-center transition-all duration-100 ${
-        isSidebarOpen ? 'ml-64' : 'ml-14'
-      }`}
+      className="bg-white shadow-md p-4 flex justify-between items-center"
     >
       <h1 className="text-[36px] font-semibold text-green-700 ml-8 select-none">Artemis Hospital</h1>
       <div className="flex items-center space-x-4">

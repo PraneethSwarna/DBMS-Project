@@ -10,11 +10,11 @@ import SignUp from './pages/SignUp';
 import LoginPage from './pages/Login';
 import HomePage from './pages/HomePage';
 import Admin from './pages/Admin';
-import NursePage from './pages/NursePage';
+import NursePage from './pages/nurse/NursePage';
 import ProtectedRoute from './ProtectedRoute';
-import PatientProfile from './pages/PatientProfile';
+import PatientProfile from './pages/patient/PatientProfile';
 import PatientSettings from './pages/PatientSettings';
-import DoctorDashboard from './components/DoctorDashboard';
+import DoctorDashboard from './components/doctor/DoctorDashboard';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

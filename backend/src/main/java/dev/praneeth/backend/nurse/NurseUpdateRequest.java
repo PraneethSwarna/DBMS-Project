@@ -7,6 +7,7 @@ public class NurseUpdateRequest {
     private String phoneNumber;
     private String email;
     private Nurse.Shift shift;
+    private String password;
 
     // Getters and Setters
     public String getFirstName() {
@@ -47,5 +48,13 @@ public class NurseUpdateRequest {
 
     public void setShift(Nurse.Shift shift) {
         this.shift = shift;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

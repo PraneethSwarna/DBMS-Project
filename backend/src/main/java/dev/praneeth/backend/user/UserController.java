@@ -52,8 +52,10 @@ public class UserController {
         Optional<UserLoginResponse> response = userService.validateLogin(loginRequest.getEmail(),
                 loginRequest.getPassword());
 
-        return response.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
+        return response.map(res -> {
+            res.setRole("patient"); // Explicitly set the role as "User"
+            return ResponseEntity.ok(res);
+        }).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
     }
 
     // Logout does not require backend processing since we are using JWT

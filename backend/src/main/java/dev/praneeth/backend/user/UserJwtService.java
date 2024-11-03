@@ -1,4 +1,4 @@
-package dev.praneeth.backend;
+package dev.praneeth.backend.User;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -6,11 +6,10 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 import org.springframework.stereotype.Service;
-import dev.praneeth.backend.User.User;
 
 
 @Service
-public class JwtService {
+public class UserJwtService {
 
     private final String SECRET_KEY = "YOUR_SECRET_KEY_YOU_SHOULD_REPLACE_WITH_ENV_VARIABLE";
     private final Key signingKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());

@@ -29,31 +29,21 @@ public class RoomService {
         roomDao.addRoom(room);
     }
 
-    // Delete a room by ID
-    public void deleteRoom(Integer roomId) {
-        boolean exists = roomDao.getRoomById(roomId).isPresent();
+    // Delete a room by room number
+    public void deleteRoom(String roomNumber) {
+        boolean exists = roomDao.getRoomByRoomNumber(roomNumber).isPresent();
         if (!exists) {
-            throw new IllegalStateException("Room with ID " + roomId + " does not exist.");
+            throw new IllegalStateException("Room with number " + roomNumber + " does not exist.");
         }
-        roomDao.deleteRoom(roomId);
+        roomDao.deleteRoom(roomNumber);
     }
 
-    // Update a room by ID
+    // Update a room by room number
     @Transactional
-    public void updateRoom(Integer roomId, RoomUpdateRequest updateRequest) {
+    public void updateRoom(String roomNumber, RoomUpdateRequest updateRequest) {
         // Retrieve the room or throw an exception if not found
-        Room room = roomDao.getRoomById(roomId)
-                .orElseThrow(() -> new IllegalStateException("Room with ID " + roomId + " does not exist."));
-
-        // Update room number if provided and not empty
-        if (updateRequest.getRoomNumber() != null && !updateRequest.getRoomNumber().trim().isEmpty()) {
-            // Check if the new room number is already taken by another room
-            Optional<Room> roomWithNumber = roomDao.getRoomByRoomNumber(updateRequest.getRoomNumber());
-            if (roomWithNumber.isPresent() && !roomWithNumber.get().getRoomID().equals(roomId)) {
-                throw new IllegalStateException("Room number already taken");
-            }
-            room.setRoomNumber(updateRequest.getRoomNumber());
-        }
+        Room room = roomDao.getRoomByRoomNumber(roomNumber)
+                .orElseThrow(() -> new IllegalStateException("Room with number " + roomNumber + " does not exist."));
 
         // Update room type if provided
         if (updateRequest.getRoomType() != null) {

@@ -68,7 +68,7 @@ const ProfileMenu = () => {
         >
           <li>
             <Link
-              to="/profile"
+              to="/patient/profile"
               className="block px-4 py-2 hover:bg-gray-800"
             >
               Dashboard
@@ -76,7 +76,7 @@ const ProfileMenu = () => {
           </li>
           <li>
             <Link
-              to="/profile/edit"
+              to="/patient/settings"
               className="block px-4 py-2 hover:bg-gray-800"
             >
               Settings

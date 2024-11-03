@@ -6,16 +6,15 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import dev.praneeth.backend.JwtService;
 
 @Service
 public class UserService {
 
     private final UserDao userDao;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    private final UserJwtService jwtService;
 
-    public UserService(UserDao userDao, BCryptPasswordEncoder passwordEncoder, JwtService jwtService) {
+    public UserService(UserDao userDao, BCryptPasswordEncoder passwordEncoder, UserJwtService jwtService) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -95,17 +94,19 @@ public class UserService {
         userDao.updateUser(user);
     }
 
-    // Updated validateLogin method to return UserLoginResponse with token
+    // Updated validateLogin method to return UserLoginResponse with token and role
     public Optional<UserLoginResponse> validateLogin(String email, String rawPassword) {
         Optional<User> user = userDao.getUserByEmail(email);
         if (user.isPresent() && passwordEncoder.matches(rawPassword, user.get().getPassword())) {
             String token = jwtService.generateToken(user.get());
+            String role = "patient"; // Assuming role is "USER", modify as needed
             return Optional.of(new UserLoginResponse(
                     user.get().getUserID(),
                     user.get().getFirstName(),
                     user.get().getLastName(),
                     user.get().getEmail(),
-                    token));
+                    token,
+                    role));
         }
         return Optional.empty();
     }

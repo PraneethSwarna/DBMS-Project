@@ -27,14 +27,14 @@ public class RoomController {
     }
 
     // Delete a room by ID
-    @DeleteMapping(path = "/{roomId}")
-    public void deleteRoom(@PathVariable("roomId") Integer roomId) {
-        roomService.deleteRoom(roomId);
+    @DeleteMapping(path = "/{roomNumber}")
+    public void deleteRoom(@PathVariable("roomNumber") String roomNumber) {
+        roomService.deleteRoom(roomNumber);
     }
 
     // Update a room by ID
     @PutMapping(path = "/{roomId}")
-    public void updateRoom(@PathVariable("roomId") Integer roomId, @RequestBody RoomUpdateRequest updateRequest) {
-        roomService.updateRoom(roomId, updateRequest);
+    public void updateRoom(@PathVariable("roomNumber") String roomNumber, @RequestBody RoomUpdateRequest updateRequest) {
+        roomService.updateRoom(roomNumber, updateRequest);
     }
 }

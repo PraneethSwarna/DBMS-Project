@@ -240,7 +240,7 @@ const HomePage = () => {
             </section>
 
             {/* footer Section */}
-            <div className="text-center pt-12 bg-lime-50">
+            <div className="text-center pt-12 bg-lime-50" id="contact-us">
                 <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, delay: 0.1 }}
                     className="text-3xl md:text-[70px] font-bold header-font text-lime-900 text-center mb-8">
                     Get In Touch

@@ -6,24 +6,42 @@ DELETE FROM surgery_prescription WHERE surgeryID IN (SELECT surgeryID FROM surge
 DELETE FROM prescription_medicine WHERE prescriptionID IN (SELECT prescriptionID FROM prescription);
 DELETE FROM diagnosis;
 
-ALTER TABLE diagnosis AUTO_INCREMENT = 1;
+ALTER TABLE home_consultation AUTO_INCREMENT = 1;
 
 use dbms;
 
-ALTER TABLE users
-RENAME TO user;
+DELETE FROM homeConsultation;
 
-ALTER TABLE user
-RENAME COLUMN patientID TO userID;
+ALTER TABLE hospitalizations
+RENAME TO hospitalization;
+
+ALTER TABLE nurse
+ADD COLUMN password VARCHAR(255);
+
+ALTER TABLE hospitalization
+RENAME COLUMN hospitalizationid TO doctorID;
+
+ALTER TABLE home_consultation
+ADD CONSTRAINT fk_doctorID
+FOREIGN KEY (doctorID) REFERENCES doctor(doctorID);
 
 select * from users;
 
-DESCRIBE diagnosis;
+DESCRIBE room;
 
 ALTER TABLE user
 RENAME COLUMN phone_number TO phoneNumber;
 
-DROP TABLE prescription;
+-- Step 1: Drop the existing primary key constraint
+ALTER TABLE room DROP PRIMARY KEY;
+
+-- Step 2: Remove the roomID column
+ALTER TABLE room DROP COLUMN roomID;
+
+-- Step 3: Add a primary key constraint to the roomNumber column
+ALTER TABLE room ADD PRIMARY KEY (roomNumber);
+
+DROP TABLE hospitalization;
 
 CREATE TABLE Prescription (
     prescriptionID INT PRIMARY KEY AUTO_INCREMENT,
@@ -70,5 +88,33 @@ CREATE TABLE surgery_prescription (
     FOREIGN KEY (prescriptionID) REFERENCES prescription(prescriptionID)
 );
 
-DROP TABLE surgery;
+DROP TABLE hospitalization;
+
+-- Drop the existing home_consultation table
+DROP TABLE IF EXISTS home_consultation;
+
+-- Create the home_consultation table with the specified columns
+CREATE TABLE home_consultation (
+    homeConsultationID INT AUTO_INCREMENT PRIMARY KEY,
+    consultationDate DATE NOT NULL,
+    consultationTime TIME(6) NULL,
+    doctorID INT NULL,
+    notes TEXT,
+    outcome VARCHAR(255),
+    patientID INT NOT NULL,
+    FOREIGN KEY (doctorID) REFERENCES doctor(doctorID),
+    FOREIGN KEY (patientID) REFERENCES user(userID)
+);
+
+CREATE TABLE hospitalization (
+    hospitalizationID INT PRIMARY KEY AUTO_INCREMENT,
+    admissionDate DATE NOT NULL,
+    dischargeDate DATE NULL,
+    reason VARCHAR(255) NOT NULL,
+    notes TEXT,
+    patientID INT NOT NULL,
+    roomNumber VARCHAR(10),
+    FOREIGN KEY (patientID) REFERENCES user(userID),
+    FOREIGN KEY (roomNumber) REFERENCES room(roomNumber)
+);
 

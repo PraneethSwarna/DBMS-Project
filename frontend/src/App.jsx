@@ -4,11 +4,17 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './toastStyles.module.css';
 import MainLayout from './layouts/MainLayout';
+import PatientLayout from './layouts/PatientLayout';
+import DoctorLayout from './layouts/DoctorLayout';
 import SignUp from './pages/SignUp';
 import LoginPage from './pages/Login';
 import HomePage from './pages/HomePage';
-import DoctorPage from './pages/DoctorPage';
-import Address from './components/Address';
+import Admin from './pages/Admin';
+import NursePage from './pages/NursePage';
+import ProtectedRoute from './ProtectedRoute';
+import PatientProfile from './pages/PatientProfile';
+import PatientSettings from './pages/PatientSettings';
+import DoctorDashboard from './components/DoctorDashboard';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,7 +22,40 @@ const router = createBrowserRouter(
       <Route index element={<HomePage />} />
       <Route path='login' element={<LoginPage />} />
       <Route path='signup' element={<SignUp />} />
-      <Route path='doctor' element={<DoctorPage />} />
+      <Route path='admin' element={<Admin />} />
+
+      <Route
+        path='patient'
+        element={
+          <ProtectedRoute>
+            <PatientLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route path='profile' element={<PatientProfile />} /> 
+        <Route path='settings' element={<PatientSettings />} />
+      </Route>
+
+      <Route
+        path='doctor'
+        element={
+          <ProtectedRoute>
+            <DoctorLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<DoctorDashboard />} /> 
+        {/* <Route path='profile' element={<DoctorProfile />} /> */}
+      </Route>
+
+      <Route
+        path='nurse'
+        element={
+          <ProtectedRoute>
+            <NursePage />
+          </ProtectedRoute>
+        }
+      />
     </Route>
   )
 );

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Designer from '../assets/Hospital_1.png';
 import logo from '../assets/logo.png';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -22,24 +23,41 @@ const LoginPage = () => {
     }
   }, [navigate]);
 
-  const submitHandler = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
         const response = await axios.post('http://localhost:8080/api/v1/user/login', { email, password });
         
-        // Get token and userId from response.data
-        const { token, userId } = response.data;
+        // Get token, role, and userId from response.data
+        const { token, role, userId } = response.data;
         
-        // Save only token and userId in localStorage
-        localStorage.setItem('token', token); // Save token
-        localStorage.setItem('userId', userId); // Save userId
+        // Save token and role in localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', role);
+        
+        // Save the specific ID based on role
+        if (role === 'patient' && userId) {
+            localStorage.setItem('userId', userId);
+        }
         
         setIsLoading(false);
-        navigate('/'); // Redirect to homepage
+        
+        // Redirect based on role
+        window.location.href = role === 'USER' ? '/user' : '/';
     } catch (err) {
         setIsLoading(false);
-        toast.error(err.response?.data?.message || 'Login failed');
+        if (err.response) {
+          if (err.response.status === 401) {
+              toast.error("Invalid email or password. Please try again.");
+          } else if (err.response.status === 500) {
+              toast.error("Server error. Please try again later.");
+          } else {
+              toast.error(err.response.data.message || "An error occurred. Please try again.");
+          }
+      } else {
+          toast.error("Network error. Please check your connection.");
+      }
     }
 };
 
@@ -74,7 +92,7 @@ const LoginPage = () => {
             <span className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-2xl border-2 border-white">G</span>
           </div>
           <p className="text-gray-100 mb-6">or use email to login</p>
-          <form onSubmit={submitHandler} className="space-y-6">
+          <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-4">
               <input
                 type="email"
@@ -161,6 +179,7 @@ const LoginPage = () => {
           </span>
         </a>
       </div>
+      <ToastContainer />
     </section>
   );
 };

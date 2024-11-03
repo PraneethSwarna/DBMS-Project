@@ -8,6 +8,7 @@ public class Nurse {
     private String phoneNumber;
     private String email;
     private Shift shift;
+    private String password;
 
     public enum Shift {
         Morning, Evening, Night
@@ -61,5 +62,13 @@ public class Nurse {
 
     public void setShift(Shift shift) {
         this.shift = shift;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

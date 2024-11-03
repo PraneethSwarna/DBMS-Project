@@ -8,17 +8,19 @@ public class Doctor {
     private String phoneNumber;
     private String email;
     private String officeNumber;
+    private String password;
 
     // Constructors
     public Doctor() {}
 
-    public Doctor(String firstName, String lastName, String specialty, String phoneNumber, String email, String officeNumber) {
+    public Doctor(String firstName, String lastName, String specialty, String phoneNumber, String email, String officeNumber, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.specialty = specialty;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.officeNumber = officeNumber;
+        this.password = password;
     }
 
     // Getters and Setters
@@ -78,6 +80,14 @@ public class Doctor {
         this.officeNumber = officeNumber;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "Doctor{" +
@@ -88,6 +98,7 @@ public class Doctor {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", officeNumber='" + officeNumber + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

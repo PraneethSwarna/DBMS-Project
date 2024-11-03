@@ -1,8 +1,7 @@
 package dev.praneeth.backend.room;
 
 public class Room {
-    private Integer roomID;
-    private String roomNumber;
+    private String roomNumber; // Primary Key
     private RoomType roomType;
     private Status status;
 
@@ -23,22 +22,13 @@ public class Room {
     // Constructors
     public Room() {}
 
-    public Room(Integer roomID, String roomNumber, RoomType roomType, Status status) {
-        this.roomID = roomID;
+    public Room(String roomNumber, RoomType roomType, Status status) {
         this.roomNumber = roomNumber;
         this.roomType = roomType;
         this.status = status;
     }
 
     // Getters and Setters
-    public Integer getRoomID() {
-        return roomID;
-    }
-
-    public void setRoomID(Integer roomID) {
-        this.roomID = roomID;
-    }
-
     public String getRoomNumber() {
         return roomNumber;
     }
@@ -66,8 +56,7 @@ public class Room {
     @Override
     public String toString() {
         return "Room{" +
-                "roomID=" + roomID +
-                ", roomNumber='" + roomNumber + '\'' +
+                "roomNumber='" + roomNumber + '\'' +
                 ", roomType=" + roomType +
                 ", status=" + status +
                 '}';

@@ -30,6 +30,7 @@ public class DoctorDao {
             doctor.setPhoneNumber(rs.getString("phoneNumber"));
             doctor.setEmail(rs.getString("email"));
             doctor.setOfficeNumber(rs.getString("officeNumber"));
+            doctor.setPassword(rs.getString("password"));
             return doctor;
         }
     };
@@ -56,14 +57,15 @@ public class DoctorDao {
 
     // Add a new doctor
     public void addDoctor(Doctor doctor) {
-        String sql = "INSERT INTO doctor (firstName, lastName, specialty, phoneNumber, email, officeNumber) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO doctor (firstName, lastName, specialty, phoneNumber, email, officeNumber, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 doctor.getFirstName(),
                 doctor.getLastName(),
                 doctor.getSpecialty(),
                 doctor.getPhoneNumber(),
                 doctor.getEmail(),
-                doctor.getOfficeNumber());
+                doctor.getOfficeNumber(),
+                doctor.getPassword());
     }
 
     // Delete a doctor by ID
@@ -74,7 +76,7 @@ public class DoctorDao {
 
     // Update a doctor by ID
     public void updateDoctor(Integer doctorID, Doctor doctor) {
-        String sql = "UPDATE doctor SET firstName = ?, lastName = ?, specialty = ?, phoneNumber = ?, email = ?, officeNumber = ? WHERE doctorID = ?";
+        String sql = "UPDATE doctor SET firstName = ?, lastName = ?, specialty = ?, phoneNumber = ?, email = ?, officeNumber = ?, password = ? WHERE doctorID = ?";
         jdbcTemplate.update(sql,
                 doctor.getFirstName(),
                 doctor.getLastName(),
@@ -82,6 +84,7 @@ public class DoctorDao {
                 doctor.getPhoneNumber(),
                 doctor.getEmail(),
                 doctor.getOfficeNumber(),
+                doctor.getPassword(),
                 doctorID);
     }
 }

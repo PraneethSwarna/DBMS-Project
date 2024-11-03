@@ -1,7 +1,7 @@
-package dev.praneeth.backend.User;
+package dev.praneeth.backend.Doctor;
 
-public class UserLoginResponse {
-    private Integer userId;
+public class DoctorLoginResponse {
+    private Integer doctorId;
     private String firstName;
     private String lastName;
     private String email;
@@ -9,8 +9,8 @@ public class UserLoginResponse {
     private String role;
 
     // Constructor
-    public UserLoginResponse(Integer userId, String firstName, String lastName, String email, String token, String role) {
-        this.userId = userId;
+    public DoctorLoginResponse(Integer doctorId, String firstName, String lastName, String email, String token, String role) {
+        this.doctorId = doctorId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -19,12 +19,12 @@ public class UserLoginResponse {
     }
 
     // Getters and Setters
-    public Integer getUserId() {
-        return userId;
+    public Integer getDoctorId() {
+        return doctorId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setDoctorId(Integer doctorId) {
+        this.doctorId = doctorId;
     }
 
     public String getFirstName() {

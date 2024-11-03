@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import ProfileMenu from './ProfileMenu';
 
-const NavbarExplore = () => {
+const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
@@ -33,12 +33,12 @@ const NavbarExplore = () => {
           </Link>
           <div className="ml-16 translate-y-[4px] xl:block select-none hidden mx-auto space-x-6">
             <Link to="/" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/')}`}>Home</Link>
-            <Link to="/popular" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/popular')}`}>Appointments</Link>
-            <Link to="/top_rated" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/top_rated')}`}>Surgery</Link>
-            <Link to="/upcoming" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/upcoming')}`}>Home Consultations</Link>
-            <Link to="/upcoming" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/upcoming')}`}>Room Booking</Link>
-            <Link to="/upcoming" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/upcoming')}`}>Our Family</Link>
-            <Link to="/upcoming" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/upcoming')}`}>Contact Us</Link>
+            <Link to="/patient/appointment" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/popular')}`}>Appointments</Link>
+            <Link to="/patient/surgery" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/top_rated')}`}>Surgery</Link>
+            <Link to="/patient/home_consultation" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/upcoming')}`}>Home Consultations</Link>
+            <Link to="/patient/room_booking" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/upcoming')}`}>Room Booking</Link>
+            <Link to="/our_family" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/upcoming')}`}>Our Family</Link>
+            <Link onClick={() => document.getElementById("contact-us").scrollIntoView({ behavior: "smooth" })} className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/upcoming')}`}>Contact Us</Link>
           </div>
           <ProfileMenu />
         </div>
@@ -47,4 +47,4 @@ const NavbarExplore = () => {
   );
 };
 
-export default NavbarExplore;
+export default Navbar;

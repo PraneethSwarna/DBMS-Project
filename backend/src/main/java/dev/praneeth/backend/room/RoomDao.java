@@ -21,7 +21,6 @@ public class RoomDao {
     private RowMapper<Room> roomRowMapper() {
         return (rs, rowNum) -> {
             Room room = new Room();
-            room.setRoomID(rs.getInt("roomID"));
             room.setRoomNumber(rs.getString("roomNumber"));
             room.setRoomType(Room.RoomType.valueOf(rs.getString("roomType")));
             room.setStatus(Room.Status.valueOf(rs.getString("status")));
@@ -35,46 +34,33 @@ public class RoomDao {
         return jdbcTemplate.query(sql, roomRowMapper());
     }
 
-    // Retrieve a room by ID
-    public Optional<Room> getRoomById(Integer id) {
-        String sql = "SELECT * FROM room WHERE roomID = ?";
-        return jdbcTemplate.query(sql, roomRowMapper(), id)
-                .stream().findFirst();
-    }
-
     // Retrieve a room by room number
     public Optional<Room> getRoomByRoomNumber(String roomNumber) {
         String sql = "SELECT * FROM room WHERE roomNumber = ?";
-        return jdbcTemplate.query(sql, roomRowMapper(), roomNumber)
-                .stream().findFirst();
+        return jdbcTemplate.query(sql, roomRowMapper(), roomNumber).stream().findFirst();
     }
 
     // Add a new room
-    public int addRoom(Room room) {
+    public void addRoom(Room room) {
         String sql = "INSERT INTO room (roomNumber, roomType, status) VALUES (?, ?, ?)";
-        return jdbcTemplate.update(sql,
+        jdbcTemplate.update(sql,
                 room.getRoomNumber(),
                 room.getRoomType().name(),
-                room.getStatus().name()
-        );
+                room.getStatus().name());
     }
 
-    // Delete a room by ID
-    public int deleteRoom(Integer id) {
-        String sql = "DELETE FROM room WHERE roomID = ?";
-        return jdbcTemplate.update(sql, id);
+    // Delete a room by room number
+    public void deleteRoom(String roomNumber) {
+        String sql = "DELETE FROM room WHERE roomNumber = ?";
+        jdbcTemplate.update(sql, roomNumber);
     }
 
-    // Update an existing room
-    public int updateRoom(Room room) {
-        String sql = "UPDATE room SET roomNumber = ?, roomType = ?, status = ? WHERE roomID = ?";
-        return jdbcTemplate.update(sql,
-                room.getRoomNumber(),
+    // Update a room
+    public void updateRoom(Room room) {
+        String sql = "UPDATE room SET roomType = ?, status = ? WHERE roomNumber = ?";
+        jdbcTemplate.update(sql,
                 room.getRoomType().name(),
                 room.getStatus().name(),
-                room.getRoomID()
-        );
+                room.getRoomNumber());
     }
-
-    
 }

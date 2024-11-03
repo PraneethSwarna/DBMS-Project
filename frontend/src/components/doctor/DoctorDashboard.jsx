@@ -6,7 +6,7 @@ import { FaClipboardList } from 'react-icons/fa';
 
 const DoctorDashboard = ({ isSidebarOpen }) => {
     return (
-      <div className={`p-6 transition-all duration-100 ${isSidebarOpen ? 'ml-64' : 'ml-14'}`}>
+      <div className='p-6'>
         <div className="mb-8">
           <h2 className="text-3xl font-semibold select-none">Welcome, John Doe</h2>
           <p className="text-gray-600 mt-2 select-none">

@@ -18,8 +18,8 @@ RENAME TO hospitalization;
 ALTER TABLE nurse
 ADD COLUMN password VARCHAR(255);
 
-ALTER TABLE hospitalization
-RENAME COLUMN hospitalizationid TO doctorID;
+ALTER TABLE medical_history
+RENAME COLUMN medicalHistoryID TO historyID;
 
 ALTER TABLE home_consultation
 ADD CONSTRAINT fk_doctorID
@@ -88,7 +88,8 @@ CREATE TABLE surgery_prescription (
     FOREIGN KEY (prescriptionID) REFERENCES prescription(prescriptionID)
 );
 
-DROP TABLE hospitalization;
+DROP TABLE medical_history;
+DESCRIBE medical_history;
 
 -- Drop the existing home_consultation table
 DROP TABLE IF EXISTS home_consultation;
@@ -118,3 +119,12 @@ CREATE TABLE hospitalization (
     FOREIGN KEY (roomNumber) REFERENCES room(roomNumber)
 );
 
+CREATE TABLE medical_history (
+    medicalHistoryID INT PRIMARY KEY AUTO_INCREMENT,
+    diagnosis VARCHAR(255) NOT NULL,
+    notes TEXT,
+    patientID INT NOT NULL,
+    recordDate DATE NOT NULL,
+    treatment VARCHAR(255),
+    FOREIGN KEY (patientID) REFERENCES user(userID)
+);

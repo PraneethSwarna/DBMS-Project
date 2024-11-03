@@ -18,6 +18,11 @@ public class MedicalHistoryController {
         return medicalHistoryService.getMedicalHistories();
     }
 
+    @GetMapping("/patient/{patientId}")
+    public List<MedicalHistory> getMedicalHistoriesByPatient(@PathVariable Integer patientId) {
+        return medicalHistoryService.getHistoriesByPatient(patientId);
+    }
+
     @PostMapping
     public void addMedicalHistory(@RequestBody MedicalHistory medicalHistory) {
         medicalHistoryService.addMedicalHistory(medicalHistory);
@@ -29,7 +34,8 @@ public class MedicalHistoryController {
     }
 
     @PutMapping(path = "/{historyId}")
-    public void updateMedicalHistory(@PathVariable("historyId") Integer historyId, @RequestBody MedicalHistoryUpdateRequest updateRequest) {
+    public void updateMedicalHistory(@PathVariable("historyId") Integer historyId,
+            @RequestBody MedicalHistoryUpdateRequest updateRequest) {
         medicalHistoryService.updateMedicalHistory(historyId, updateRequest);
     }
 }

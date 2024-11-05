@@ -49,7 +49,8 @@ const LoginPage = () => {
         setIsLoading(false);
         if (err.response) {
           if (err.response.status === 401) {
-              toast.error("Invalid email or password. Please try again.");
+            toast.error("Invalid email or password. Please try again.", { autoClose: 3000 });
+
           } else if (err.response.status === 500) {
               toast.error("Server error. Please try again later.");
           } else {
@@ -179,7 +180,7 @@ const LoginPage = () => {
           </span>
         </a>
       </div>
-      <ToastContainer />
+      <ToastContainer position="top-right" autoClose={5000} />
     </section>
   );
 };

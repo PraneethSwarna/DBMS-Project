@@ -57,6 +57,13 @@ public class AppointmentService {
         appointmentDao.updateAppointment(appointment); // Assuming this method takes an Appointment object.
     }
 
+    public void updateAppointmentStatus(Integer appointmentId, String status) {
+        Appointment appointment = appointmentDao.findById(appointmentId)
+                .orElseThrow(() -> new IllegalStateException("Appointment not found"));
+        appointment.setStatus(Appointment.Status.valueOf(status));
+        appointmentDao.updateAppointment(appointment);
+    }
+
     public List<Appointment> getAppointmentsByDoctor(Integer doctorId) {
         return appointmentDao.getAppointmentsByDoctor(doctorId);
     }

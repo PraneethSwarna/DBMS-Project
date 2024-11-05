@@ -18,6 +18,24 @@ public class HospitalizationDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // RowMapper for Hospitalization object
+    private RowMapper<Hospitalization> hospitalizationRowMapper() {
+        return new RowMapper<>() {
+            @Override
+            public Hospitalization mapRow(@SuppressWarnings("null") ResultSet rs, int rowNum) throws SQLException {
+                Hospitalization hospitalization = new Hospitalization();
+                hospitalization.setHospitalizationID(rs.getInt("hospitalizationID"));
+                hospitalization.setAdmissionDate(rs.getDate("admissionDate").toLocalDate());
+                hospitalization.setDischargeDate(rs.getDate("dischargeDate") != null ? rs.getDate("dischargeDate").toLocalDate() : null);
+                hospitalization.setReason(rs.getString("reason"));
+                hospitalization.setNotes(rs.getString("notes"));
+                hospitalization.setPatientID(rs.getInt("patientID"));
+                hospitalization.setRoomNumber(rs.getString("roomNumber"));
+                return hospitalization;
+            }
+        };
+    }
+
     // Retrieve all hospitalizations
     public List<Hospitalization> getAllHospitalizations() {
         String sql = "SELECT * FROM hospitalization";
@@ -28,6 +46,12 @@ public class HospitalizationDao {
     public Optional<Hospitalization> getHospitalizationById(Integer id) {
         String sql = "SELECT * FROM hospitalization WHERE hospitalizationID = ?";
         return jdbcTemplate.query(sql, hospitalizationRowMapper(), id).stream().findFirst();
+    }
+
+    // Retrieve hospitalizations by patient ID
+    public List<Hospitalization> getHospitalizationByPatient(Integer patientID) {
+        String sql = "SELECT * FROM hospitalization WHERE patientID = ?";
+        return jdbcTemplate.query(sql, hospitalizationRowMapper(), patientID);
     }
 
     // Add a new hospitalization
@@ -61,21 +85,5 @@ public class HospitalizationDao {
         jdbcTemplate.update(sql, id);
     }
 
-    // RowMapper for Hospitalization object
-    private RowMapper<Hospitalization> hospitalizationRowMapper() {
-        return new RowMapper<>() {
-            @Override
-            public Hospitalization mapRow(@SuppressWarnings("null") ResultSet rs, int rowNum) throws SQLException {
-                Hospitalization hospitalization = new Hospitalization();
-                hospitalization.setHospitalizationID(rs.getInt("hospitalizationID"));
-                hospitalization.setAdmissionDate(rs.getDate("admissionDate").toLocalDate());
-                hospitalization.setDischargeDate(rs.getDate("dischargeDate") != null ? rs.getDate("dischargeDate").toLocalDate() : null);
-                hospitalization.setReason(rs.getString("reason"));
-                hospitalization.setNotes(rs.getString("notes"));
-                hospitalization.setPatientID(rs.getInt("patientID"));
-                hospitalization.setRoomNumber(rs.getString("roomNumber"));
-                return hospitalization;
-            }
-        };
-    }
+    
 }

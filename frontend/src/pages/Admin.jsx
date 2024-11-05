@@ -3,6 +3,7 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import Font Awesome icons
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
     const [role, setRole] = useState("Doctor");
@@ -104,7 +105,9 @@ const LoginPage = () => {
                             >
                                 {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
                             </button>
+                            
                         </div>
+                        
                     </div>
                     <button
                         type="submit"

@@ -1,4 +1,4 @@
-package dev.praneeth.backend.room;
+package dev.praneeth.backend.Room;
 
 public class Room {
     private String roomNumber; // Primary Key

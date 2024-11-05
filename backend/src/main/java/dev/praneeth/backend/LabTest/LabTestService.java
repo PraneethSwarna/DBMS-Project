@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LabTestService {
@@ -16,6 +17,10 @@ public class LabTestService {
 
     public List<LabTest> getAllLabTests() {
         return labTestDao.getAllLabTests();
+    }
+
+    public Optional<LabTest> getLabTestById(Integer labTestId) {
+        return labTestDao.getLabTestById(labTestId);
     }
 
     public void addLabTest(LabTest labTest) {

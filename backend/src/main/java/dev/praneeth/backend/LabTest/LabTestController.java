@@ -3,6 +3,7 @@ package dev.praneeth.backend.LabTest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/v1/lab_test")
@@ -17,6 +18,11 @@ public class LabTestController {
     @GetMapping
     public List<LabTest> getAllLabTests() {
         return labTestService.getAllLabTests();
+    }
+
+    @GetMapping(path = "/{labTestId}")
+    public Optional<LabTest> getLabTestById(@PathVariable("labTestId") Integer labTestId) {
+        return labTestService.getLabTestById(labTestId);
     }
 
     @PostMapping

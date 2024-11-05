@@ -1,4 +1,4 @@
-package dev.praneeth.backend.room;
+package dev.praneeth.backend.Room;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +18,16 @@ public class RoomService {
     // Retrieve all rooms
     public List<Room> getRooms() {
         return roomDao.getAllRooms();
+    }
+
+    // Retrieve room by room number
+    public Optional<Room> getRoomByRoomNumber(String roomNumber) {
+        return roomDao.getRoomByRoomNumber(roomNumber);
+    }
+
+    // Retrieve rooms by status and type
+    public List<Room> getRoomsByStatusAndType(String status, String roomType) {
+        return roomDao.getRoomsByStatusAndType(status, roomType);
     }
 
     // Add a new room

@@ -1,4 +1,4 @@
-package dev.praneeth.backend.room;
+package dev.praneeth.backend.Room;
 
 import org.springframework.context.annotation.Configuration;
 

@@ -75,22 +75,14 @@ const ProfileMenu = () => {
             </Link>
           </li>
           <li>
-            <Link
-              to="/patient/settings"
-              className="block px-4 py-2 hover:bg-gray-800"
+            <button
+              onClick={logoutHandler}
+              className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 w-full text-left"
             >
-              Settings
-            </Link>
+              Sign out
+            </button>
           </li>
         </ul>
-        <div className="py-2">
-          <button
-            onClick={logoutHandler}
-            className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 w-full text-left"
-          >
-            Sign out
-          </button>
-        </div>
       </div>
     </>
   );

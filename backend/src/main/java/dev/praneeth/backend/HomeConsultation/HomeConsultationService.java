@@ -20,6 +20,16 @@ public class HomeConsultationService {
         return homeConsultationDao.getAllConsultations();
     }
 
+    // Retrieve consultations by patient ID
+    public List<HomeConsultation> getHomeConsultationsByPatient(Integer patientID) {
+        return homeConsultationDao.getHomeConsultationsByPatient(patientID);
+    }
+
+    // Retrieve consultations by doctor ID
+    public List<HomeConsultation> getHomeConsultationsByDoctor(Integer doctorID) {
+        return homeConsultationDao.getHomeConsultationsByDoctor(doctorID);
+    }
+
     // Add a new consultation
     public void addConsultation(HomeConsultation consultation) {
         homeConsultationDao.addConsultation(consultation);

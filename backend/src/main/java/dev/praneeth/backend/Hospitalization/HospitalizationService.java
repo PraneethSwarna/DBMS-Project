@@ -20,6 +20,16 @@ public class HospitalizationService {
         return hospitalizationDao.getAllHospitalizations();
     }
 
+    // Retrieve hospitalizations by patient ID
+    public List<Hospitalization> getHospitalizationByPatient(Integer patientID) {
+        return hospitalizationDao.getHospitalizationByPatient(patientID);
+    }
+
+    // Retrieve hospitalizations by patient ID
+    public Optional<Hospitalization> getHospitalizationById(Integer patientID) {
+        return hospitalizationDao.getHospitalizationById(patientID);
+    }
+
     // Add a new hospitalization
     public void addHospitalization(Hospitalization hospitalization) {
         Optional<Hospitalization> existingHospitalization = hospitalizationDao.getHospitalizationById(hospitalization.getHospitalizationID());

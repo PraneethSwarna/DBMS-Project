@@ -51,6 +51,7 @@ const Navbar = () => {
           <Link to="/patient/home_consultation" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/patient/home_consultation')}`}>Home Consultations</Link>
           <Link to="/patient/room_booking" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/patient/room_booking')}`}>Room Booking</Link>
           <Link to="/our_family" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/our_family')}`}>Our Family</Link>
+          <Link to="/more_services" className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/our_family')}`}>More Services</Link>
           <button onClick={handleContactUsClick} className={`text-white hover:text-gray-500 font-medium font-sans pb-3 ${getLinkClass('/contact_us')}`}>Contact Us</button>
         </div>
         <ProfileMenu />

@@ -19,6 +19,18 @@ public class SurgeryService {
         return surgeryDao.getSurgeries();
     }
 
+    public Optional<Surgery> getSurgeryById(Integer surgeryId) {
+        return surgeryDao.getSurgeryById(surgeryId);
+    }
+
+    public List<Surgery> getSurgeriesByPatient(Integer patientId) {
+        return surgeryDao.getSurgeriesByPatient(patientId);
+    }
+
+    public List<Surgery> getSurgeriesByDoctor(Integer doctorId) {
+        return surgeryDao.getSurgeriesByDoctor(doctorId);
+    }
+
     @Transactional
     public void addSurgery(Surgery surgery) {
         surgeryDao.addSurgery(surgery);

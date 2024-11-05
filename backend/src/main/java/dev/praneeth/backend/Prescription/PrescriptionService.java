@@ -19,6 +19,10 @@ public class PrescriptionService {
         return prescriptionDao.getAllPrescriptions();
     }
 
+    public Optional<Prescription> getPrescriptionById(Integer prescriptionID) {
+        return prescriptionDao.getPrescriptionById(prescriptionID);
+    }
+
     public void addPrescription(Prescription prescription) {
         prescriptionDao.addPrescription(prescription);
     }

@@ -1,6 +1,7 @@
 package dev.praneeth.backend.Medicine;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,12 @@ public class MedicineController {
     @GetMapping
     public List<Medicine> getMedicines() {
         return medicineService.getMedicines();
+    }
+
+    // Get a medicine by ID
+    @GetMapping(path = "/{medicineId}")
+    public Optional<Medicine> getMedicineById(@PathVariable("medicineId") Integer medicineId) {
+        return medicineService.getMedicineById(medicineId);
     }
 
     // Add a new medicine

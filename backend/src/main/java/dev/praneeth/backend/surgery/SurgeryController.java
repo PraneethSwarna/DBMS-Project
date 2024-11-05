@@ -1,6 +1,7 @@
 package dev.praneeth.backend.Surgery;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,21 @@ public class SurgeryController {
     @GetMapping
     public List<Surgery> getSurgeries() {
         return surgeryService.getSurgeries();
+    }
+
+    @GetMapping(path = "/{surgeryId}")
+    public Optional<Surgery> getSurgeryById(@PathVariable("surgeryId") Integer surgeryId) {
+        return surgeryService.getSurgeryById(surgeryId);
+    }
+
+    @GetMapping(path = "/patient/{patientId}")
+    public List<Surgery> getSurgeriesByPatient(@PathVariable("patientId") Integer patientId) {
+        return surgeryService.getSurgeriesByPatient(patientId);
+    }
+
+    @GetMapping(path = "/doctor/{doctorId}")
+    public List<Surgery> getSurgeriesByDoctor(@PathVariable("doctorId") Integer doctorId) {
+        return surgeryService.getSurgeriesByDoctor(doctorId);
     }
 
     @PostMapping

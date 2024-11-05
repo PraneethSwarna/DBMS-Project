@@ -20,6 +20,11 @@ public class DiagnosisService {
         return diagnosisDao.getAllDiagnoses();
     }
 
+    // Get a diagnosis by ID
+    public Optional<Diagnosis> getDiagnosisById(Integer diagnosisID) {
+        return diagnosisDao.getDiagnosisById(diagnosisID);
+    }
+
     // Add a new diagnosis
     public void addDiagnosis(Diagnosis diagnosis) {
         diagnosisDao.addDiagnosis(diagnosis);
@@ -37,27 +42,25 @@ public class DiagnosisService {
     // Update an existing diagnosis
     @Transactional
     public void updateDiagnosis(Integer diagnosisID, DiagnosisUpdateRequest updateRequest) {
-        Optional<Diagnosis> existingDiagnosis = diagnosisDao.getDiagnosisById(diagnosisID);
-        if (existingDiagnosis.isEmpty()) {
-            throw new IllegalStateException("Diagnosis with ID " + diagnosisID + " does not exist");
-        }
+        // Retrieve the diagnosis or throw an exception if not found
+        Diagnosis diagnosis = diagnosisDao.getDiagnosisById(diagnosisID)
+                .orElseThrow(() -> new IllegalStateException("Diagnosis with ID " + diagnosisID + " does not exist."));
 
-        Diagnosis diagnosis = existingDiagnosis.get();
-
-        // Update fields if present in request
-        if (updateRequest.getPrescriptionID() != null && updateRequest.getPrescriptionID() > 0) {
+        // Update fields if provided
+        if (updateRequest.getPrescriptionID() != null) {
             diagnosis.setPrescriptionID(updateRequest.getPrescriptionID());
         }
-        if (updateRequest.getLabTestID() != null && updateRequest.getLabTestID() > 0) {
+        if (updateRequest.getLabTestID() != null) {
             diagnosis.setLabTestID(updateRequest.getLabTestID());
         }
-        if (updateRequest.getLabResultID() != null && updateRequest.getLabResultID() > 0) {
+        if (updateRequest.getLabResultID() != null) {
             diagnosis.setLabResultID(updateRequest.getLabResultID());
         }
-        if (updateRequest.getNotes() != null && !updateRequest.getNotes().isEmpty()) {
+        if (updateRequest.getNotes() != null) {
             diagnosis.setNotes(updateRequest.getNotes());
         }
 
+        // Save the updated diagnosis
         diagnosisDao.updateDiagnosis(diagnosisID, diagnosis);
     }
 }

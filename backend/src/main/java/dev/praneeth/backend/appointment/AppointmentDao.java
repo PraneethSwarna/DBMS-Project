@@ -2,7 +2,6 @@ package dev.praneeth.backend.Appointment;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,14 +19,19 @@ public class AppointmentDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // RowMapper for Appointment object
+    // Update the RowMapper to handle null values
     private RowMapper<Appointment> appointmentRowMapper = new RowMapper<>() {
         @Override
-        public Appointment mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
+        public Appointment mapRow(@SuppressWarnings("null") ResultSet rs, int rowNum) throws SQLException {
             Appointment appointment = new Appointment();
             appointment.setAppointmentID(rs.getInt("appointmentID"));
-            appointment.setAppointmentDate(rs.getDate("appointmentDate").toLocalDate());
-            appointment.setAppointmentTime(rs.getTime("appointmentTime").toLocalTime());
+
+            Date date = rs.getDate("appointmentDate");
+            appointment.setAppointmentDate(date != null ? date.toLocalDate() : null);
+
+            Time time = rs.getTime("appointmentTime");
+            appointment.setAppointmentTime(time != null ? time.toLocalTime() : null);
+
             appointment.setStatus(Appointment.Status.valueOf(rs.getString("status")));
             appointment.setDiagnosisID(rs.getObject("diagnosisID") != null ? rs.getInt("diagnosisID") : null);
             appointment.setDoctorID(rs.getInt("doctorID"));
@@ -36,12 +40,12 @@ public class AppointmentDao {
         }
     };
 
-    // Add a new appointment
+    // Modified addAppointment method
     public void addAppointment(Appointment appointment) {
         String sql = "INSERT INTO appointment (appointmentDate, appointmentTime, status, diagnosisID, doctorID, patientID) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
-                Date.valueOf(appointment.getAppointmentDate()),
-                Time.valueOf(appointment.getAppointmentTime()),
+                appointment.getAppointmentDate() != null ? Date.valueOf(appointment.getAppointmentDate()) : null,
+                appointment.getAppointmentTime() != null ? Time.valueOf(appointment.getAppointmentTime()) : null,
                 appointment.getStatus().name(),
                 appointment.getDiagnosisID(),
                 appointment.getDoctorID(),
@@ -61,12 +65,12 @@ public class AppointmentDao {
         return jdbcTemplate.query(sql, appointmentRowMapper);
     }
 
-    // Update an appointment by ID
+    // Modified updateAppointment method
     public void updateAppointment(Appointment appointment) {
         String sql = "UPDATE appointment SET appointmentDate = ?, appointmentTime = ?, status = ?, diagnosisID = ?, doctorID = ?, patientID = ? WHERE appointmentID = ?";
         jdbcTemplate.update(sql,
-                Date.valueOf(appointment.getAppointmentDate()),
-                Time.valueOf(appointment.getAppointmentTime()),
+                appointment.getAppointmentDate() != null ? Date.valueOf(appointment.getAppointmentDate()) : null,
+                appointment.getAppointmentTime() != null ? Time.valueOf(appointment.getAppointmentTime()) : null,
                 appointment.getStatus().name(),
                 appointment.getDiagnosisID(),
                 appointment.getDoctorID(),

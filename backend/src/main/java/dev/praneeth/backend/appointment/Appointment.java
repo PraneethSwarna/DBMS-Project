@@ -13,6 +13,7 @@ public class Appointment {
     private Integer patientID;
 
     public enum Status {
+        Pending,
         Scheduled,
         Completed,
         Cancelled

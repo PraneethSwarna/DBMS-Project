@@ -20,23 +20,21 @@ public class MedicineService {
         return medicineDao.getAllMedicines();
     }
 
+    // Get a medicine by ID
+    public Optional<Medicine> getMedicineById(Integer medicineId) {
+        return medicineDao.getMedicineById(medicineId);
+    }
+
     // Add a new medicine
     public void addMedicine(Medicine medicine) {
-        // Check if the medicine name is already in use
-        Optional<Medicine> existingMedicineByName = medicineDao.getMedicineByName(medicine.getName());
-        if (existingMedicineByName.isPresent()) {
-            throw new IllegalStateException("Medicine with name " + medicine.getName() + " already exists");
-        }
         medicineDao.addMedicine(medicine);
     }
 
     // Delete a medicine by ID
-    public void deleteMedicine(Integer medicineID) {
-        Optional<Medicine> medicine = medicineDao.getMedicineById(medicineID);
-        if (medicine.isEmpty()) {
-            throw new IllegalStateException("Medicine with ID " + medicineID + " does not exist");
-        }
-        medicineDao.deleteMedicine(medicineID);
+    public void deleteMedicine(Integer medicineId) {
+        medicineDao.getMedicineById(medicineId)
+                .orElseThrow(() -> new IllegalStateException("Medicine with id " + medicineId + " does not exist"));
+        medicineDao.deleteMedicine(medicineId);
     }
 
     // Update an existing medicine

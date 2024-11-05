@@ -1,4 +1,4 @@
-package dev.praneeth.backend.room;
+package dev.praneeth.backend.Room;
 
 public class RoomUpdateRequest {
     private String roomNumber;

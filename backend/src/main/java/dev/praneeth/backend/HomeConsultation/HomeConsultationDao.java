@@ -18,10 +18,40 @@ public class HomeConsultationDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // RowMapper for HomeConsultation object
+    private RowMapper<HomeConsultation> consultationRowMapper() {
+        return new RowMapper<>() {
+            @Override
+            public HomeConsultation mapRow(@SuppressWarnings("null") ResultSet rs, int rowNum) throws SQLException {
+                HomeConsultation consultation = new HomeConsultation();
+                consultation.setHomeConsultationID(rs.getInt("homeConsultationID"));
+                consultation.setConsultationDate(rs.getDate("consultationDate").toLocalDate());
+                consultation.setConsultationTime(rs.getTime("consultationTime").toLocalTime());
+                consultation.setDoctorID(rs.getObject("doctorID") != null ? rs.getInt("doctorID") : null);
+                consultation.setNotes(rs.getString("notes"));
+                consultation.setOutcome(rs.getString("outcome"));
+                consultation.setPatientID(rs.getInt("patientID"));
+                return consultation;
+            }
+        };
+    }
+
     // Retrieve all consultations
     public List<HomeConsultation> getAllConsultations() {
         String sql = "SELECT * FROM home_consultation";
         return jdbcTemplate.query(sql, consultationRowMapper());
+    }
+
+    // Retrieve consultations by patient ID
+    public List<HomeConsultation> getHomeConsultationsByPatient(Integer patientID) {
+        String sql = "SELECT * FROM home_consultation WHERE patientID = ?";
+        return jdbcTemplate.query(sql, consultationRowMapper(), patientID);
+    }
+
+    // Retrieve consultations by doctor ID
+    public List<HomeConsultation> getHomeConsultationsByDoctor(Integer doctorID) {
+        String sql = "SELECT * FROM home_consultation WHERE doctorID = ?";
+        return jdbcTemplate.query(sql, consultationRowMapper(), doctorID);
     }
 
     // Retrieve a consultation by ID
@@ -59,23 +89,5 @@ public class HomeConsultationDao {
                 consultation.getPatientID(),
                 consultation.getNotes(),
                 consultation.getHomeConsultationID());
-    }
-
-    // RowMapper for HomeConsultation object
-    private RowMapper<HomeConsultation> consultationRowMapper() {
-        return new RowMapper<>() {
-            @Override
-            public HomeConsultation mapRow(@SuppressWarnings("null") ResultSet rs, int rowNum) throws SQLException {
-                HomeConsultation consultation = new HomeConsultation();
-                consultation.setHomeConsultationID(rs.getInt("homeConsultationID"));
-                consultation.setConsultationDate(rs.getDate("consultationDate").toLocalDate());
-                consultation.setConsultationTime(rs.getTime("consultationTime").toLocalTime());
-                consultation.setDoctorID(rs.getObject("doctorID") != null ? rs.getInt("doctorID") : null);
-                consultation.setNotes(rs.getString("notes"));
-                consultation.setOutcome(rs.getString("outcome"));
-                consultation.setPatientID(rs.getInt("patientID"));
-                return consultation;
-            }
-        };
     }
 }

@@ -21,7 +21,7 @@ const PatientProfile = () => {
     }).then((response) => setUser(response.data))
       .catch((error) => console.error(error));
 
-    axios.get(`/api/v1/medical_history?patientId=${userId}`, {
+    axios.get(`/api/v1/medical_history?${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     }).then((response) => setMedicalHistory(response.data))
       .catch((error) => console.error(error));

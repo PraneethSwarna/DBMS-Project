@@ -20,6 +20,18 @@ public class HomeConsultationController {
         return homeConsultationService.getConsultations();
     }
 
+    // Retrieve consultations by patient ID
+    @GetMapping(path = "/patient/{patientId}")
+    public List<HomeConsultation> getHomeConsultationsByPatient(@PathVariable("patientId") Integer patientId) {
+        return homeConsultationService.getHomeConsultationsByPatient(patientId);
+    }
+
+    // Retrieve consultations by doctor ID
+    @GetMapping(path = "/doctor/{doctorId}")
+    public List<HomeConsultation> getHomeConsultationsByDoctor(@PathVariable("doctorId") Integer doctorId) {
+        return homeConsultationService.getHomeConsultationsByDoctor(doctorId);
+    }
+
     // Add a new consultation
     @PostMapping
     public void addConsultation(@RequestBody HomeConsultation consultation) {

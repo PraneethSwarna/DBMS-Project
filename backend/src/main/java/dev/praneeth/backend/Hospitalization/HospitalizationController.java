@@ -2,6 +2,7 @@ package dev.praneeth.backend.Hospitalization;
 
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/v1/hospitalization")
@@ -16,6 +17,16 @@ public class HospitalizationController {
     @GetMapping
     public List<Hospitalization> getHospitalizations() {
         return hospitalizationService.getHospitalizations();
+    }
+
+    @GetMapping(path = "/{hospitalizationID}")
+    public Optional<Hospitalization> getHospitalizationById(@PathVariable("hospitalizationID") Integer hospitalizationID) {
+        return hospitalizationService.getHospitalizationById(hospitalizationID);
+    }
+
+    @GetMapping(path = "/patient/{patientID}")
+    public List<Hospitalization> getHospitalizationByPatient(@PathVariable("patientID") Integer patientID) {
+        return hospitalizationService.getHospitalizationByPatient(patientID);
     }
 
     @PostMapping

@@ -6,7 +6,7 @@ DELETE FROM surgery_prescription WHERE surgeryID IN (SELECT surgeryID FROM surge
 DELETE FROM prescription_medicine WHERE prescriptionID IN (SELECT prescriptionID FROM prescription);
 DELETE FROM diagnosis;
 
-ALTER TABLE home_consultation AUTO_INCREMENT = 1;
+ALTER TABLE medicine AUTO_INCREMENT = 1;
 
 use dbms;
 
@@ -18,16 +18,43 @@ RENAME TO hospitalization;
 ALTER TABLE nurse
 ADD COLUMN password VARCHAR(255);
 
-ALTER TABLE medical_history
-RENAME COLUMN medicalHistoryID TO historyID;
+ALTER TABLE lab_result
+RENAME COLUMN test_date TO testDate;
 
-ALTER TABLE home_consultation
-ADD CONSTRAINT fk_doctorID
-FOREIGN KEY (doctorID) REFERENCES doctor(doctorID);
+ALTER TABLE diagnosis
+ADD CONSTRAINT fk_PrescriptionID
+FOREIGN KEY (prescriptionID) REFERENCES prescription(prescriptionID);
+
+DESCRIBE surgery;
+
+-- Make diagnosisID, doctorID, appointmentDate, and appointmentTime nullable
+ALTER TABLE appointment
+MODIFY COLUMN diagnosisID INT NULL,
+MODIFY COLUMN doctorID INT NULL,
+MODIFY COLUMN appointmentDate DATE NULL,
+MODIFY COLUMN appointmentTime TIME NULL;
+
+-- Add status column with enum type including "Pending"
+ALTER TABLE appointment
+MODIFY COLUMN status ENUM('Pending', 'Scheduled', 'Cancelled', 'Completed') DEFAULT 'Pending';
+
+ALTER TABLE surgery
+MODIFY COLUMN surgeryType ENUM(
+    'Appendectomy',
+    'Cholecystectomy',
+    'HerniaRepair',
+    'Mastectomy',
+    'CSection',
+    'HipReplacement',
+    'KneeReplacement',
+    'CoronaryArteryBypass',
+    'GastricBypass',
+    'Tonsillectomy'
+) NOT NULL;
 
 select * from users;
 
-DESCRIBE room;
+DESCRIBE hospitalization;
 
 ALTER TABLE user
 RENAME COLUMN phone_number TO phoneNumber;
@@ -72,6 +99,8 @@ CREATE TABLE surgery (
     FOREIGN KEY (patientID) REFERENCES user(patientID)
 );
 
+select * from surgery_doctor;
+
 CREATE TABLE surgery_doctor (
     surgeryID INT,
     doctorID INT,
@@ -89,7 +118,7 @@ CREATE TABLE surgery_prescription (
 );
 
 DROP TABLE medical_history;
-DESCRIBE medical_history;
+DESCRIBE surgery;
 
 -- Drop the existing home_consultation table
 DROP TABLE IF EXISTS home_consultation;

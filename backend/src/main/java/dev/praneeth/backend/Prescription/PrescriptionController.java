@@ -1,6 +1,7 @@
 package dev.praneeth.backend.Prescription;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,11 @@ public class PrescriptionController {
     @GetMapping
     public List<Prescription> getPrescriptions() {
         return prescriptionService.getPrescriptions();
+    }
+
+    @GetMapping(path = "/{prescriptionId}")
+    public Optional<Prescription> getPrescriptionById(@PathVariable("prescriptionId") Integer prescriptionId) {
+        return prescriptionService.getPrescriptionById(prescriptionId);
     }
 
     @PostMapping

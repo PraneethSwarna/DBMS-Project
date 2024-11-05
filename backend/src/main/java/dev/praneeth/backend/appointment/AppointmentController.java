@@ -18,6 +18,11 @@ public class AppointmentController {
         return appointmentService.getAppointments();
     }
 
+    @GetMapping("/patient/{patientId}")
+    public List<Appointment> getAppointmentsByPatient(@PathVariable Integer patientId) {
+        return appointmentService.getAppointmentsByPatient(patientId);
+    }
+
     @PostMapping
     public void addAppointment(@RequestBody Appointment appointment) {
         appointmentService.addAppointment(appointment);
@@ -29,7 +34,8 @@ public class AppointmentController {
     }
 
     @PutMapping(path = "/{appointmentId}")
-    public void updateAppointment(@PathVariable("appointmentId") Integer appointmentId, @RequestBody AppointmentUpdateRequest updateRequest) {
+    public void updateAppointment(@PathVariable("appointmentId") Integer appointmentId,
+            @RequestBody AppointmentUpdateRequest updateRequest) {
         appointmentService.updateAppointment(appointmentId, updateRequest);
     }
 }

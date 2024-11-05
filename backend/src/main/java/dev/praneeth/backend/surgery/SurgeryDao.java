@@ -52,6 +52,34 @@ public class SurgeryDao {
         return surgeries;
     }
 
+    public List<Surgery> getSurgeriesByPatient(Integer patientID) {
+        String sql = "SELECT * FROM surgery WHERE patientID = ?";
+        List<Surgery> surgeries = jdbcTemplate.query(sql, surgeryRowMapper, patientID);
+
+        for (Surgery surgery : surgeries) {
+            List<Integer> doctorIDs = getDoctorIDsForSurgery(surgery.getSurgeryID());
+            List<Integer> prescriptionIDs = getPrescriptionIDsForSurgery(surgery.getSurgeryID());
+            surgery.setDoctorIDs(doctorIDs);
+            surgery.setPrescriptionIDs(prescriptionIDs);
+        }
+
+        return surgeries;
+    }
+
+    public List<Surgery> getSurgeriesByDoctor(Integer doctorID) {
+        String sql = "SELECT s.* FROM surgery s JOIN surgery_doctor sd ON s.surgeryID = sd.surgeryID WHERE sd.doctorID = ?";
+        List<Surgery> surgeries = jdbcTemplate.query(sql, surgeryRowMapper, doctorID);
+
+        for (Surgery surgery : surgeries) {
+            List<Integer> doctorIDs = getDoctorIDsForSurgery(surgery.getSurgeryID());
+            List<Integer> prescriptionIDs = getPrescriptionIDsForSurgery(surgery.getSurgeryID());
+            surgery.setDoctorIDs(doctorIDs);
+            surgery.setPrescriptionIDs(prescriptionIDs);
+        }
+
+        return surgeries;
+    }
+
     @SuppressWarnings("unused")
     public void addSurgery(Surgery surgery) {
         String sql = "INSERT INTO surgery (surgeryDate, surgeryType, outcome, notes, patientID) VALUES (?, ?, ?, ?, ?)";
@@ -77,6 +105,14 @@ public class SurgeryDao {
     
 
     public void deleteSurgery(Integer surgeryID) {
+        // Delete related entries in surgery_doctor and surgery_prescription tables
+        String deleteSurgeryDoctorSql = "DELETE FROM surgery_doctor WHERE surgeryID = ?";
+        jdbcTemplate.update(deleteSurgeryDoctorSql, surgeryID);
+
+        String deleteSurgeryPrescriptionSql = "DELETE FROM surgery_prescription WHERE surgeryID = ?";
+        jdbcTemplate.update(deleteSurgeryPrescriptionSql, surgeryID);
+
+        // Delete the surgery entry
         String sql = "DELETE FROM surgery WHERE surgeryID = ?";
         jdbcTemplate.update(sql, surgeryID);
     }

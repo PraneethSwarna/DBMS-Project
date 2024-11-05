@@ -1,4 +1,4 @@
-package dev.praneeth.backend.room;
+package dev.praneeth.backend.Room;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -38,6 +38,12 @@ public class RoomDao {
     public Optional<Room> getRoomByRoomNumber(String roomNumber) {
         String sql = "SELECT * FROM room WHERE roomNumber = ?";
         return jdbcTemplate.query(sql, roomRowMapper(), roomNumber).stream().findFirst();
+    }
+
+    // Retrieve rooms by status and type
+    public List<Room> getRoomsByStatusAndType(String status, String roomType) {
+        String sql = "SELECT * FROM room WHERE status = ? AND roomType = ?";
+        return jdbcTemplate.query(sql, roomRowMapper(), status, roomType);
     }
 
     // Add a new room

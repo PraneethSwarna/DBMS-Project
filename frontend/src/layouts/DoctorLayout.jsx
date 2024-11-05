@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Sidebar from '../components/doctor/DoctorSidebar';
-import NavbarDashboard from '../components/NavbarDashboard';
+import NavbarDashboard from '../components/doctor/DoctorNavbar';
 import { Outlet } from 'react-router-dom';
 
 const DoctorLayout = () => {

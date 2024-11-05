@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Hero from "../assets/Hospital_2.png"
@@ -8,11 +8,12 @@ import Hero2 from "../assets/Hospital_1.png"
 import Doctor from "../assets/Doctor.png"
 
 const HomePage = () => {
+    const token = localStorage.getItem("token");
     const navigate = useNavigate();
 
-    const redirectToDashboard = () => {
-        navigate("/dashboard");
-    };
+    if (!token) {
+        return <Navigate to="/login" replace />;
+      }
 
     return (
         <div className="bg-white text-gray-800 select-none font-sans">
@@ -108,7 +109,7 @@ const HomePage = () => {
                         <motion.div className="w-1/2 px-6 text-left" initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
                             <h3 className="text-2xl font-semibold text-blue-900">Appointments</h3>
                             <p className="mt-4">Get easy and quick access to our healthcare experts. Schedule an appointment that fits your needs and receive personalized care at your convenience. Our team of experienced professionals is here to ensure a seamless healthcare journey for you.</p>
-                            <button onClick={() => navigate("/appointments")} className="mt-4 px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition">
+                            <button onClick={() => navigate("/patient/appointment")} className="mt-4 px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition">
                                 Book Appointment
                             </button>
                         </motion.div>
@@ -140,6 +141,7 @@ const HomePage = () => {
                                             duration: 0.5
                                              // Adds staggered delay effect based on the index
                                         }}
+                                        onClick={() => navigate("/patient/surgery")}
                                         className="bg-white shadow-lg rounded-lg p-4 min-w-[300px] cursor-pointer transition-transform"
                                     >
                                         <img src={surgery.image} alt={surgery.title} className="rounded-lg h-48 w-full object-cover mb-4" />
@@ -164,7 +166,7 @@ const HomePage = () => {
                             <motion.div className="text-left w-full md:w-1/2" initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
                                 <h3 className="text-2xl font-semibold text-green-900">Home Consultation</h3>
                                 <p className="mt-4">Experience quality healthcare from the comfort of your home. Our home consultation service allows you to connect with our medical experts for personalized advice, diagnosis, and treatment.</p>
-                                <button onClick={() => navigate("/home-consultation")} className="mt-4 px-4 py-2 bg-green-900 text-white rounded-lg hover:bg-green-700 transition">
+                                <button onClick={() => navigate("/patient/home_consultation")} className="mt-4 px-4 py-2 bg-green-900 text-white rounded-lg hover:bg-green-700 transition">
                                     Schedule a Home Consultation
                                 </button>
                             </motion.div>

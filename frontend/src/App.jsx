@@ -5,16 +5,22 @@ import 'react-toastify/dist/ReactToastify.css';
 import styles from './toastStyles.module.css';
 import MainLayout from './layouts/MainLayout';
 import PatientLayout from './layouts/PatientLayout';
+import PatientProfile from './pages/patient/PatientProfile';
+import PatientAppointments from './pages/patient/PatientAppointment';
+import PatientSurgery from './pages/patient/PatientSurgery';
+import PatientHomeConsultation from './pages/patient/PatientHomeConsultation';
+import PatientDoctorProfile from './pages/patient/PatientDoctorProfile';
+import PatientRoomBooking from './pages/patient/PatientRoomBooking';
 import DoctorLayout from './layouts/DoctorLayout';
+import DoctorProfile from './pages/doctor/DoctorProfile';
+import DoctorDashboard from './pages/doctor/DoctorDashboard';
 import SignUp from './pages/SignUp';
 import LoginPage from './pages/Login';
 import HomePage from './pages/HomePage';
 import Admin from './pages/Admin';
 import NursePage from './pages/nurse/NursePage';
 import ProtectedRoute from './ProtectedRoute';
-import PatientProfile from './pages/patient/PatientProfile';
-import PatientSettings from './pages/PatientSettings';
-import DoctorDashboard from './components/doctor/DoctorDashboard';
+import ViewDoctors from './pages/ViewDoctors';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,8 +38,12 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       >
-        <Route path='profile' element={<PatientProfile />} /> 
-        <Route path='settings' element={<PatientSettings />} />
+        <Route path='appointment' element={<PatientAppointments />} />
+        <Route path='surgery' element={<PatientSurgery />} />
+        <Route path='home_consultation' element={<PatientHomeConsultation />} />
+        <Route path='room_booking' element={<PatientRoomBooking />} />
+        <Route path='profile' element={<PatientProfile />} />
+        <Route path='doctor/:doctorId' element={<PatientDoctorProfile />} />
       </Route>
 
       <Route
@@ -44,8 +54,10 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       >
-        <Route index element={<DoctorDashboard />} /> 
-        {/* <Route path='profile' element={<DoctorProfile />} /> */}
+        <Route index element={<DoctorDashboard />} />
+        <Route path='profile' element={<DoctorProfile />} />
+        <Route path='view_doctors/:doctorId' element={<PatientDoctorProfile />} />
+        <Route path='view_doctors' element={<ViewDoctors />} />
       </Route>
 
       <Route
@@ -55,7 +67,10 @@ const router = createBrowserRouter(
             <NursePage />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route path='doctor/:doctorId' element={<PatientDoctorProfile />} />
+        <Route path='view_doctors' element={<ViewDoctors />} />
+      </Route>
     </Route>
   )
 );

@@ -1,6 +1,8 @@
 package dev.praneeth.backend.Diagnosis;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +19,12 @@ public class DiagnosisController {
     @GetMapping
     public List<Diagnosis> getDiagnoses() {
         return diagnosisService.getDiagnoses();
+    }
+
+    // Get a diagnosis by ID
+    @GetMapping(path = "/{diagnosisId}")
+    public Optional<Diagnosis> getDiagnosisById(@PathVariable("diagnosisId") Integer diagnosisId) {
+        return diagnosisService.getDiagnosisById(diagnosisId);
     }
 
     // Add a new diagnosis

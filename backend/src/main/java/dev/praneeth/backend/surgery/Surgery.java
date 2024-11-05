@@ -104,15 +104,15 @@ public class Surgery {
     }
 
     public enum SurgeryType {
-        APPENDECTOMY,
-        CHOLECYSTECTOMY,
-        HERNIA_REPAIR,
-        MASTECTOMY,
-        C_SECTION,
-        HIP_REPLACEMENT,
-        KNEE_REPLACEMENT,
-        CORONARY_ARTERY_BYPASS,
-        GASTRIC_BYPASS,
-        TONSILLECTOMY
+        Appendectomy,
+        Cholecystectomy,
+        HerniaRepair,
+        Mastectomy,
+        CSection,
+        HipReplacement,
+        KneeReplacement,
+        CoronaryArteryBypass,
+        GastricBypass,
+        Tonsillectomy
     }
 }
